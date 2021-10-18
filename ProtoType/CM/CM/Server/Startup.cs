@@ -14,6 +14,9 @@ using System.Reflection;
 using CM.Library;
 using Microsoft.EntityFrameworkCore;
 using CM.Library.DBContexts;
+using CM.Library.DataModels;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace CM.Server
 {
@@ -30,10 +33,6 @@ namespace CM.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddControllersWithViews();
-            services.AddRazorPages();
-
             services.AddMediatR(typeof(CMLibraryMediatREntryPoint).Assembly);
 
 
@@ -67,18 +66,35 @@ namespace CM.Server
             services.AddDbContext<EventsDBContext>(options =>
                options
                .UseSqlServer(
-                    Configuration.GetConnectionString("EventsDatabaseConnnectionString"),
+                    Configuration.GetConnectionString("EventsDatabaseConnectionStringLaptop"),
                     b => b.MigrationsAssembly("CM.Server")
                     ));
 
             services.AddDbContext<CurrentStateDBContext>(options =>
             options
             .UseSqlServer(
-                 Configuration.GetConnectionString("CurrentStateDatabaseConnnectionString"),
+                 Configuration.GetConnectionString("CurrentStateDatabaseConnectionStringLaptop"),
                  b => b.MigrationsAssembly("CM.Server")
                  ));
 
+            services.AddIdentity<PersonDataModel, IdentityRole>().AddEntityFrameworkStores<CurrentStateDBContext>();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = false;
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
+
+
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,7 +122,11 @@ namespace CM.Server
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
+
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
