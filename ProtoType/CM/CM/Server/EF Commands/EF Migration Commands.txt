@@ -1,0 +1,5 @@
+﻿
+Add-Migration InitialCreate -context EventsDBContext -outputdir Migrations/EventsDatabase
+Add-Migration InitialCreate -context CurrentStateDBContext -outputdir Migrations/CurrentStateDatabase
+Update-database InitialCreate -context CurrentStateDBContext
+Update-database InitialCreate -context EventsDBContext

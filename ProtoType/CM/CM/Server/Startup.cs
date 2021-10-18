@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -5,7 +6,14 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using CM.Library;
+using Microsoft.EntityFrameworkCore;
+using CM.Library.DBContexts;
 
 namespace CM.Server
 {
@@ -26,7 +34,50 @@ namespace CM.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddSwaggerGen();
+            services.AddMediatR(typeof(CMLibraryMediatREntryPoint).Assembly);
+
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "CM API",
+                    Description = "The server side api",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Omar Wasfi",
+                        Email = "contact@omwasfi.com",
+                        Url = new Uri("https://omarwasfi.com"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
+            services.AddDbContext<EventsDBContext>(options =>
+               options
+               .UseSqlServer(
+                    Configuration.GetConnectionString("EventsDatabaseConnnectionString"),
+                    b => b.MigrationsAssembly("CM.Server")
+                    ));
+
+            services.AddDbContext<CurrentStateDBContext>(options =>
+            options
+            .UseSqlServer(
+                 Configuration.GetConnectionString("CurrentStateDatabaseConnnectionString"),
+                 b => b.MigrationsAssembly("CM.Server")
+                 ));
+
 
         }
 

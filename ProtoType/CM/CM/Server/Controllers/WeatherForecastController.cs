@@ -24,6 +24,10 @@ namespace CM.Server.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Get the latest wheather forcast
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
