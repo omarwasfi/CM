@@ -14,10 +14,12 @@ namespace CM.AdminClient
     {
         public static async Task Main(string[] args)
         {
+            var apiUrl = "https://localhost:5001/";
+
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiUrl) });
 
             await builder.Build().RunAsync();
         }

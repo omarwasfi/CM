@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Net.Http.Headers;
 
 namespace CM.Server
 {
@@ -35,6 +36,13 @@ namespace CM.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
+
             services.AddMediatR(typeof(CMLibraryMediatREntryPoint).Assembly);
 
 
@@ -136,12 +144,16 @@ namespace CM.Server
             app.UseSwaggerUI();
 
 
+
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
 
             app.UseRouting();
+
+            app.UseCors("MyPolicy");
+
 
             app.UseAuthentication();
             app.UseAuthorization();
