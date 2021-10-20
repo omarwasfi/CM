@@ -8,7 +8,7 @@ namespace CM.Library.DataModels.Events
 {
     public enum EventType
     {
-        NewUser,
+        RegisterPerson,
         UserUpdateHisData
         
     }

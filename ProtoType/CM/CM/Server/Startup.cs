@@ -45,6 +45,7 @@ namespace CM.Server
 
             services.AddMediatR(typeof(CMLibraryMediatREntryPoint).Assembly);
 
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
             services.AddSwaggerGen(c =>
             {

@@ -7,6 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
+using CM.Library.Events.Person;
 
 namespace CM.Server.Controllers
 {
@@ -16,10 +18,12 @@ namespace CM.Server.Controllers
     {
         private readonly UserManager<PersonDataModel> _userManager;
         private readonly SignInManager<PersonDataModel> _signInManager;
-        public AuthController(UserManager<PersonDataModel> userManager, SignInManager<PersonDataModel> signInManager)
+        private readonly IMediator _mediator;
+        public AuthController(UserManager<PersonDataModel> userManager, SignInManager<PersonDataModel> signInManager , IMediator mediator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _mediator = mediator;
         }
 
         [HttpPost]
@@ -36,8 +40,11 @@ namespace CM.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterRequest parameters)
         {
+            
             var user = new PersonDataModel();
             user.UserName = parameters.UserName;
+            await _mediator.Send(new RegisterPersonCommand(user));
+
             var result = await _userManager.CreateAsync(user, parameters.Password);
             if (!result.Succeeded) return BadRequest(result.Errors.FirstOrDefault()?.Description);
             return await Login(new LoginRequest
