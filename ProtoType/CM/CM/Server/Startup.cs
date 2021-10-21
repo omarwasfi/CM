@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Net.Http.Headers;
+using FluentValidation;
 
 namespace CM.Server
 {
@@ -45,6 +46,7 @@ namespace CM.Server
 
             services.AddMediatR(typeof(CMLibraryMediatREntryPoint).Assembly);
 
+            services.AddValidatorsFromAssembly(typeof(CMLibraryMediatREntryPoint).Assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
 
             services.AddSwaggerGen(c =>
@@ -77,14 +79,14 @@ namespace CM.Server
             services.AddDbContext<EventsDBContext>(options =>
                options
                .UseSqlServer(
-                    Configuration.GetConnectionString("EventsDatabaseConnectionStringLaptop"),
+                    Configuration.GetConnectionString("EventsDatabaseConnectionString"),
                     b => b.MigrationsAssembly("CM.Server")
                     ));
 
             services.AddDbContext<CurrentStateDBContext>(options =>
             options
             .UseSqlServer(
-                 Configuration.GetConnectionString("CurrentStateDatabaseConnectionStringLaptop"),
+                 Configuration.GetConnectionString("CurrentStateDatabaseConnectionString"),
                  b => b.MigrationsAssembly("CM.Server")
                  ));
 
