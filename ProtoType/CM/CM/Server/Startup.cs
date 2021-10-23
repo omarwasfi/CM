@@ -21,6 +21,8 @@ using System.Net.Http;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Net.Http.Headers;
 using FluentValidation;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
 
 namespace CM.Server
 {

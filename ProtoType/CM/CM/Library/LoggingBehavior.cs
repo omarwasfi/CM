@@ -2,6 +2,7 @@
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,10 +20,26 @@ namespace CM.Library
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            Log.Information($"Handling {typeof(TRequest).Name}");
-            var response = await next();
-            Log.Information($"Handled {typeof(TResponse).Name}");
+            var requestName = request.GetType().Name;
+            var requestGuid = Guid.NewGuid().ToString();
+            var requestNameWithGuid = $"{requestName} [{requestGuid}]";
 
+            Log.Information($"[Start] {requestName} [{requestGuid}]");
+            
+            TResponse response;
+            var stopwatch = Stopwatch.StartNew();
+
+            try
+            {
+                response = await next();
+
+            }
+            finally
+            {
+                stopwatch.Stop();
+                Log.Information($"[END] {requestNameWithGuid};  Execution time={stopwatch.ElapsedMilliseconds}ms");
+
+            }
 
             return response;
         }

@@ -14,7 +14,6 @@ namespace CM.Library.Events.Person
         {
             RuleFor(x => x.PersonDataModel.UserName).NotNull().WithMessage("The Phone number can't be null");
             RuleFor(x => x.PersonDataModel.UserName).NotEmpty().WithMessage("The Phone number can't be empty");
-            RuleFor(x => x.PersonDataModel.UserName).Length(5,20).WithMessage("user name can't be less than 10 chars");
 
         }
     }

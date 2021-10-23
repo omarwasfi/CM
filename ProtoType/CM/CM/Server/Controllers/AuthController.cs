@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using CM.Library.Events.Person;
+using FluentValidation;
 
 namespace CM.Server.Controllers
 {
@@ -29,12 +30,20 @@ namespace CM.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest request)
         {
-            var user = await _userManager.FindByNameAsync(request.UserName);
-            if (user == null) return BadRequest("User does not exist");
-            var singInResult = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-            if (!singInResult.Succeeded) return BadRequest("Invalid password");
-            await _signInManager.SignInAsync(user, request.RememberMe);
-            return Ok();
+            try
+            {
+                await _mediator.Send(new LoginPersonCommand(request.UserName, request.Password, request.RememberMe));
+                return Ok();
+            }
+            catch(ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error ");
+            }
+
         }
 
         [HttpPost]
@@ -43,15 +52,25 @@ namespace CM.Server.Controllers
             
             var user = new PersonDataModel();
             user.UserName = parameters.UserName;
-            await _mediator.Send(new RegisterPersonCommand(user));
 
-            var result = await _userManager.CreateAsync(user, parameters.Password);
-            if (!result.Succeeded) return BadRequest(result.Errors.FirstOrDefault()?.Description);
-            return await Login(new LoginRequest
+            try{
+                await _mediator.Send(new RegisterPersonCommand(user , parameters.Password));
+               
+                return await Login(new LoginRequest
+                {
+                    UserName = parameters.UserName,
+                    Password = parameters.Password
+                });
+            }
+            catch(ValidationException v)
             {
-                UserName = parameters.UserName,
-                Password = parameters.Password
-            });
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error ");
+            }
+                       
         }   
 
 
@@ -59,12 +78,21 @@ namespace CM.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
-            return Ok();
+            try
+            {
+                await _mediator.Send(new LogoutPersonCommand(User.Identity.Name));
+                return Ok();
+
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error ");
+
+            }
         }
 
         [HttpGet]
-        public CurrentUser CurrentUserInfo()
+        public CurrentUser GetCurrentUserInfo()
         {
             return new CurrentUser
             {

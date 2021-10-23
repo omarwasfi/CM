@@ -8,8 +8,9 @@ namespace CM.Library.DataModels.Events
 {
     public enum EventType
     {
+        LoginPerson,
         RegisterPerson,
-        UserUpdateHisData
+        LogoutPerson
         
     }
 }

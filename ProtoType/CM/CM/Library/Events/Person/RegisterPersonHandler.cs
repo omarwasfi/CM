@@ -2,6 +2,7 @@
 using CM.Library.DataModels.Events;
 using CM.Library.DBContexts;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,11 @@ namespace CM.Library.Events.Person
     public class RegisterPersonHandler : IRequestHandler<RegisterPersonCommand, PersonDataModel>
     {
         private readonly EventsDBContext _eventsDBContext;
-        public RegisterPersonHandler(EventsDBContext eventsDBContext)
+        private readonly UserManager<PersonDataModel> _userManager;
+        public RegisterPersonHandler(EventsDBContext eventsDBContext, UserManager<PersonDataModel> userManager)
         {
             this._eventsDBContext = eventsDBContext;
+            _userManager = userManager;
         }
         public async Task<PersonDataModel> Handle(RegisterPersonCommand request, CancellationToken cancellationToken)
         {
@@ -25,14 +28,20 @@ namespace CM.Library.Events.Person
             
             registerPersonEvent.Type = EventType.RegisterPerson;
             registerPersonEvent.DateTime = DateTime.Now;
-            registerPersonEvent.Content = JsonConvert.SerializeObject(request.PersonDataModel);
+            registerPersonEvent.Content = JsonConvert.SerializeObject(request);
 
             await _eventsDBContext.Events.AddAsync(registerPersonEvent);
             await _eventsDBContext.SaveChangesAsync();
 
-            // TODO - Triger some other method to run the events
+            await applyEventToTheCurrentState(request);
 
             return request.PersonDataModel;
+        }
+
+        private async Task applyEventToTheCurrentState(RegisterPersonCommand request)
+        {
+            await _userManager.CreateAsync(request.PersonDataModel , request.Password);
+           
         }
     }
 }

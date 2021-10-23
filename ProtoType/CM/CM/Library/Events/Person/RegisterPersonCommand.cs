@@ -12,9 +12,12 @@ namespace CM.Library.Events.Person
     {
         public PersonDataModel PersonDataModel { get; set; }
 
-        public RegisterPersonCommand(PersonDataModel personDataModel)
+        public string Password { get; set; }
+
+        public RegisterPersonCommand(PersonDataModel personDataModel , string password)
         {
             this.PersonDataModel = personDataModel;
+            this.Password = password;
         }
     }
 }
