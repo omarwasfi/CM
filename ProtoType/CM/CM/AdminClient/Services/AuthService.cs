@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace CM.Client.Services
+namespace CM.AdminClient.Services
 {
     public class AuthService : IAuthService
     {

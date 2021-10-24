@@ -10,11 +10,13 @@ using System.Threading.Tasks;
 using MediatR;
 using CM.Library.Events.Person;
 using FluentValidation;
+using Microsoft.AspNetCore.Cors;
 
 namespace CM.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [EnableCors("MyPolicy")]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<PersonDataModel> _userManager;

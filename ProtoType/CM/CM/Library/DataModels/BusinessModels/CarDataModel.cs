@@ -10,6 +10,8 @@ namespace CM.Library.DataModels.BusinessModels
 {
     public class CarDataModel
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         [Required]

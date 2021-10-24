@@ -35,6 +35,9 @@ namespace CM.Server
 
         public IConfiguration Configuration { get; }
 
+        private readonly string _policyName = "CorsPolicy";
+        private readonly string _anotherPolicy = "AnotherCorsPolicy";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
@@ -45,6 +48,9 @@ namespace CM.Server
                        .AllowAnyMethod()
                        .AllowAnyHeader();
             }));
+
+            services.AddCors();
+
 
             services.AddMediatR(typeof(CMLibraryMediatREntryPoint).Assembly);
 
@@ -150,6 +156,8 @@ namespace CM.Server
 
             app.UseSwaggerUI();
 
+            //app.UseCors("MyPolicy");
+
 
 
             app.UseHttpsRedirection();
@@ -160,6 +168,7 @@ namespace CM.Server
             app.UseRouting();
 
             app.UseCors("MyPolicy");
+
 
 
             app.UseAuthentication();
