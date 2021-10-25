@@ -23,6 +23,11 @@
     <Folder Include="Events\OwendCar\" />
     <Folder Include="Events\OfferFixRequest\" />
     <Folder Include="Events\Problem\" />
+    <Folder Include="Queries\CarBrand\" />
+    <Folder Include="Queries\Car\" />
+    <Folder Include="Queries\FixRequest\" />
+    <Folder Include="Queries\OfferFixRequest\" />
+    <Folder Include="Queries\OwendCar\" />
   </ItemGroup>
 
 </Project>
