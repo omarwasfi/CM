@@ -9,7 +9,7 @@ namespace CM.Shared.DataViewModels.BusinessViewModels
 {
     public class ProblemTypeDataViewModel
     {
-        public string Id { get; }
+        public string Id { get; set; }
 
         [Required]
         [MaxLength(100, ErrorMessage = "Name Can't be more than 100 characters")]

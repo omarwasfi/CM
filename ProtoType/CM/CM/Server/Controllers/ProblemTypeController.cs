@@ -1,4 +1,8 @@
-﻿using CM.Shared.DataViewModels.BusinessViewModels;
+﻿using CM.Library.DataModels.BusinessModels;
+using CM.Library.Events.ProblemType;
+using CM.Library.Queries.ProblemType;
+using CM.Shared.DataViewModels.BusinessViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -15,29 +19,57 @@ namespace CM.Server.Controllers
     [EnableCors("MyPolicy")]
     public class ProblemTypeController : ControllerBase
     {
+        private readonly IMediator _mediator;
+
+        public ProblemTypeController(IMediator mediator)
+        {
+            this._mediator = mediator;
+        }
         [Authorize]
         [HttpPost("Add")]
 
         public async Task<IActionResult> Add(ProblemTypeDataViewModel problemTypeDataView)
         {
-            if(problemTypeDataView.Name == "hhe")
+            try
+            {
+                await _mediator.Send(new AddProblemTypeCommand(problemTypeDataView.Name));
+                return Ok();
+            }
+            catch
             {
                 return BadRequest();
             }
-            else
-            {
-                return Ok();
-            }
+            
             
         }
 
         [Authorize]
         [HttpGet("Get")]
 
-        public string Get()
+        public async Task<List<ProblemTypeDataViewModel>> GetAsync()
         {
-            return "Hello Admin";
+            try
+            {
+                
+                List<ProblemTypeDataModel> problemTypeDataModels = await _mediator.Send(new GetProblemTypesQuery());
 
+                List<ProblemTypeDataViewModel> problemTypeDataViewModels = new List<ProblemTypeDataViewModel>();
+
+                foreach(ProblemTypeDataModel problemType in problemTypeDataModels)
+                {
+                    ProblemTypeDataViewModel problemTypeDataViewModel = new ProblemTypeDataViewModel();
+                    problemTypeDataViewModel.Id = problemType.Id;
+                    problemTypeDataViewModel.Name = problemType.Name;
+
+                    problemTypeDataViewModels.Add(problemTypeDataViewModel);
+                }
+
+                return problemTypeDataViewModels;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
