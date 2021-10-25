@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CM.Shared.DataModels
+namespace CM.Shared.DataViewModels
 {
     public class CurrentUser
     {

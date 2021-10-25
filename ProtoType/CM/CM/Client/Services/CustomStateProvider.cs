@@ -1,4 +1,4 @@
-﻿using CM.Shared.DataModels;
+﻿using CM.Shared.DataViewModels;
 using Microsoft.AspNetCore.Components.Authorization;
 using System;
 using System.Collections.Generic;

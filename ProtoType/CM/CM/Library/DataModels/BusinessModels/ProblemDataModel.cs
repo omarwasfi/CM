@@ -18,6 +18,10 @@ namespace CM.Library.DataModels.BusinessModels
         public virtual ProblemTypeDataModel ProblemType { get; set; }
 
         [Required]
+        [Column(TypeName = "nvarchar(100)")]
+        public ProblemState State { get; set; }
+
+        [Required]
         [Column(TypeName = "nvarchar(400)")]
         public string Description { get; set; }
 

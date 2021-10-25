@@ -1,4 +1,5 @@
 ﻿using CM.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -43,5 +44,7 @@ namespace CM.Server.Controllers
             })
             .ToArray();
         }
+
+       
     }
 }

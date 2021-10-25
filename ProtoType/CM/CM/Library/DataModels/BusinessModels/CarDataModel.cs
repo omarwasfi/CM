@@ -18,6 +18,7 @@ namespace CM.Library.DataModels.BusinessModels
         [Column(TypeName = "nvarchar(100)")]
         public string Name { get; set; }
 
+        [Column(TypeName = "nvarchar(200)")]
         public string Descrition { get; set; }
 
         public virtual CarBrandDataModel CarBrand { get; set; }

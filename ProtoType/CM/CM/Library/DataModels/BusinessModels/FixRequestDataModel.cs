@@ -15,11 +15,23 @@ namespace CM.Library.DataModels.BusinessModels
         public string Id { get; set; }
         
         [Required]
-        public ProblemDataModel Problem { get; set; }
+        public virtual ProblemDataModel Problem { get; set; }
+        
+        [Required]
+        [Column(TypeName = "nvarchar(100)")]
+        public FixRequestState State { get; set; }
+
+        [Required]
         public DateTime DateTime{ get; set; }
 
-        public PersonDataModel From { get; set; }
+        public virtual PersonDataModel From { get; set; }
 
-        public PersonDataModel To { get; set; }
+        /// <summary>
+        /// From person's notes
+        /// </summary>
+        [Column(TypeName = "nvarchar(200)")]
+        public string Notes { get; set; }
+
+        public virtual PersonDataModel To { get; set; }
     }
 }

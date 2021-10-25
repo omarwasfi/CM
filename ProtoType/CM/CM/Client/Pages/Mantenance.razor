@@ -1,0 +1,20 @@
+﻿@page "/Mantenance"
+@inject NavigationManager navigationManager
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <SfButton OnClick="navigateToFixer"></SfButton>
+        </div>
+        <div class="col-sm">
+
+        </div>
+    </div>
+</div>
+
+@code {
+    private void navigateToFixer()
+    {
+        navigationManager.NavigateTo("/Fixer");
+    }
+}

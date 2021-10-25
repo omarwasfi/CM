@@ -17,6 +17,12 @@
 
   <ItemGroup>
     <Folder Include="DataProcesse\" />
+    <Folder Include="Events\Car\" />
+    <Folder Include="Events\CarBrand\" />
+    <Folder Include="Events\FixRequest\" />
+    <Folder Include="Events\OwendCar\" />
+    <Folder Include="Events\OfferFixRequest\" />
+    <Folder Include="Events\Problem\" />
   </ItemGroup>
 
 </Project>

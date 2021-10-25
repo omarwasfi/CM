@@ -1,5 +1,5 @@
 ﻿using CM.Library.DataModels;
-using CM.Shared.DataModels;
+using CM.Shared.DataViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

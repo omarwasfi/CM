@@ -1,24 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CM.Library.DataModels.BusinessModels
+namespace CM.Shared.DataViewModels.BusinessViewModels
 {
-    public class CarBrandDataModel
+    public class CarBrandViewModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(100)")]
+        [MaxLength(100,ErrorMessage = "Brand Name Can't be more than 100 characters")]
         public string Name { get; set; }
 
-        [Column(TypeName = "nvarchar(200)")]
+        [MaxLength(200, ErrorMessage = "Brand description Can't be more than 200 characters")]
         public string Description { get; set; }
     }
 }

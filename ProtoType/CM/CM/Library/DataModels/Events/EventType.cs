@@ -8,9 +8,19 @@ namespace CM.Library.DataModels.Events
 {
     public enum EventType
     {
+        #region Person
+        
         LoginPerson,
         RegisterPerson,
-        LogoutPerson
-        
+        LogoutPerson,
+
+        #endregion
+
+        #region ProblemType
+
+        AddNewProblemType
+
+        #endregion
+
     }
 }
