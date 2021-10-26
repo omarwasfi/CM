@@ -18,7 +18,8 @@ namespace CM.Library.DataModels.Events
 
         #region ProblemType
 
-        AddNewProblemType
+        AddNewProblemType,
+        AddNewProblem
 
         #endregion
 
