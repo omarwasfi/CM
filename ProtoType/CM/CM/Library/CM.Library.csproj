@@ -26,7 +26,6 @@
     <Folder Include="Queries\Car\" />
     <Folder Include="Queries\FixRequest\" />
     <Folder Include="Queries\OfferFixRequest\" />
-    <Folder Include="Queries\OwendCar\" />
   </ItemGroup>
 
 </Project>

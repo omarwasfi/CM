@@ -25,6 +25,8 @@ namespace CM.Shared.DataViewModels
 
         public List<OwendCarDataViewModel> OwendCars { get; set; }
 
+        public List<ProblemDataViewModel> Problems { get; set; }
+
 
     }
 }

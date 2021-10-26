@@ -9,10 +9,15 @@ namespace CM.Shared.DataViewModels.BusinessViewModels
 {
     public class ProblemDataViewModel
     {
-        public string Id { get;}
+        public string Id { get; set; }
 
         [Required]
         public ProblemTypeDataViewModel ProblemType { get; set; }
+
+        public string State { get; set; }
+
+        public PersonDataViewModel Person { get; set; }
+        public OwendCarDataViewModel OwendCar { get; set; }
 
         [Required]
         [MaxLength(400, ErrorMessage = "Description Can't be more than 400 characters")]

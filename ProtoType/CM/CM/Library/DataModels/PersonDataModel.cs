@@ -17,7 +17,7 @@ namespace CM.Library.DataModels
         public string LastName { get; set; }
         public bool IsAFixer { get; set; } = false;
         public virtual ICollection<OwendCarDataModel> OwendCars { get; set; }
-
+        public virtual ICollection<ProblemDataModel> Problems { get; set; }
 
     }
 }
