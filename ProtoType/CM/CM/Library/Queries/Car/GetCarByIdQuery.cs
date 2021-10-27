@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CM.Library.Queries.OwnedCar
+namespace CM.Library.Queries.Car
 {
-    public class GetOwnedCarByIdQuery : IRequest<OwnedCarDataModel>
+    public class GetCarByIdQuery : IRequest<CarDataModel>
     {
         public string Id { get; set; }
 
-        public GetOwnedCarByIdQuery(string id)
+        public GetCarByIdQuery(string id)
         {
             Id = id;
         }

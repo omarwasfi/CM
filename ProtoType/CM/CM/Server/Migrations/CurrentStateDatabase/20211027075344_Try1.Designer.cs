@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CM.Server.Migrations.CurrentStateDatabase
 {
     [DbContext(typeof(CurrentStateDBContext))]
-    [Migration("20211025184645_EditsInPersonDataModel")]
-    partial class EditsInPersonDataModel
+    [Migration("20211027075344_Try1")]
+    partial class Try1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,6 +39,101 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                     b.ToTable("CarBrands");
                 });
 
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.CarDataModel", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CarBrandId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Descrition")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarBrandId");
+
+                    b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.FixRequestDataModel", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FromId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ProblemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ToId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromId");
+
+                    b.HasIndex("ProblemId");
+
+                    b.HasIndex("ToId");
+
+                    b.ToTable("FixRequests");
+                });
+
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OfferFixRequestDataModel", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FromId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ProblemId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ToId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromId");
+
+                    b.HasIndex("ProblemId");
+
+                    b.HasIndex("ToId");
+
+                    b.ToTable("OfferFixRequests");
+                });
+
             modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OwnedCarDataModel", b =>
                 {
                     b.Property<string>("Id")
@@ -58,7 +153,63 @@ namespace CM.Server.Migrations.CurrentStateDatabase
 
                     b.HasIndex("PersonDataModelId");
 
-                    b.ToTable("OwnedCarDataModel");
+                    b.ToTable("OwnedCars");
+                });
+
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.ProblemDataModel", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(400)");
+
+                    b.Property<string>("Location")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OwnedCarId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PersonId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProblemTypeId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OwnedCarId");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("ProblemTypeId");
+
+                    b.ToTable("Problems");
+                });
+
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.ProblemTypeDataModel", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProblemTypes");
                 });
 
             modelBuilder.Entity("CM.Library.DataModels.PersonDataModel", b =>
@@ -266,11 +417,85 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.CarDataModel", b =>
+                {
+                    b.HasOne("CM.Library.DataModels.BusinessModels.CarBrandDataModel", "CarBrand")
+                        .WithMany()
+                        .HasForeignKey("CarBrandId");
+
+                    b.Navigation("CarBrand");
+                });
+
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.FixRequestDataModel", b =>
+                {
+                    b.HasOne("CM.Library.DataModels.PersonDataModel", "From")
+                        .WithMany()
+                        .HasForeignKey("FromId");
+
+                    b.HasOne("CM.Library.DataModels.BusinessModels.ProblemDataModel", "Problem")
+                        .WithMany()
+                        .HasForeignKey("ProblemId");
+
+                    b.HasOne("CM.Library.DataModels.PersonDataModel", "To")
+                        .WithMany()
+                        .HasForeignKey("ToId");
+
+                    b.Navigation("From");
+
+                    b.Navigation("Problem");
+
+                    b.Navigation("To");
+                });
+
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OfferFixRequestDataModel", b =>
+                {
+                    b.HasOne("CM.Library.DataModels.PersonDataModel", "From")
+                        .WithMany()
+                        .HasForeignKey("FromId");
+
+                    b.HasOne("CM.Library.DataModels.BusinessModels.ProblemDataModel", "Problem")
+                        .WithMany()
+                        .HasForeignKey("ProblemId");
+
+                    b.HasOne("CM.Library.DataModels.PersonDataModel", "To")
+                        .WithMany()
+                        .HasForeignKey("ToId");
+
+                    b.Navigation("From");
+
+                    b.Navigation("Problem");
+
+                    b.Navigation("To");
+                });
+
             modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OwnedCarDataModel", b =>
                 {
                     b.HasOne("CM.Library.DataModels.PersonDataModel", null)
                         .WithMany("OwnedCars")
                         .HasForeignKey("PersonDataModelId");
+                });
+
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.ProblemDataModel", b =>
+                {
+                    b.HasOne("CM.Library.DataModels.BusinessModels.OwnedCarDataModel", "OwnedCar")
+                        .WithMany()
+                        .HasForeignKey("OwnedCarId");
+
+                    b.HasOne("CM.Library.DataModels.PersonDataModel", "Person")
+                        .WithMany("Problems")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CM.Library.DataModels.BusinessModels.ProblemTypeDataModel", "ProblemType")
+                        .WithMany()
+                        .HasForeignKey("ProblemTypeId");
+
+                    b.Navigation("OwnedCar");
+
+                    b.Navigation("Person");
+
+                    b.Navigation("ProblemType");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -327,6 +552,8 @@ namespace CM.Server.Migrations.CurrentStateDatabase
             modelBuilder.Entity("CM.Library.DataModels.PersonDataModel", b =>
                 {
                     b.Navigation("OwnedCars");
+
+                    b.Navigation("Problems");
                 });
 #pragma warning restore 612, 618
         }

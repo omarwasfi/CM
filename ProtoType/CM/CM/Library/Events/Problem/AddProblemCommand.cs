@@ -13,18 +13,18 @@ namespace CM.Library.Events.Problem
 
         public string ProblemTypeId { get; set; }
         public string PersonId { get; set; }
-        public string OwendCarId { get; set; }
+        public string OwnedCarId { get; set; }
 
         public string Description { get; set; }
 
         public string Location { get; set; }
        
 
-        public AddProblemCommand(string problemTypeId, string personId, string owendCarId, string description, string location)
+        public AddProblemCommand(string problemTypeId, string personId, string ownedCarId, string description, string location)
         {
             ProblemTypeId = problemTypeId;
             PersonId = personId;
-            OwendCarId = owendCarId;
+            OwnedCarId = ownedCarId;
             Description = description;
             Location = location;
         }

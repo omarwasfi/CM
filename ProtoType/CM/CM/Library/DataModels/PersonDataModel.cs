@@ -11,12 +11,17 @@ namespace CM.Library.DataModels
 {
     public class PersonDataModel : IdentityUser
     {
+        public PersonDataModel()
+        {
+            this.OwnedCars = new HashSet<OwnedCarDataModel>();
+            this.Problems = new HashSet<ProblemDataModel>();
+        }
         [Column(TypeName = "nvarchar(100)")]
         public string FirstName { get; set; }
         [Column(TypeName = "nvarchar(100)")]
         public string LastName { get; set; }
         public bool IsAFixer { get; set; } = false;
-        public virtual ICollection<OwendCarDataModel> OwendCars { get; set; }
+        public virtual ICollection<OwnedCarDataModel> OwnedCars { get; set; }
         public virtual ICollection<ProblemDataModel> Problems { get; set; }
 
     }

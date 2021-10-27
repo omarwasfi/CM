@@ -17,9 +17,9 @@ namespace CM.Shared.DataViewModels.BusinessViewModels
 
         [MaxLength(100, ErrorMessage = "Car descrition Can't be more than 200 characters")]
 
-        public string Descrition { get; set; }
+        public string Description { get; set; }
 
-        public CarBrandViewModel CarBrand { get; set; }
+        public CarBrandDataViewModel CarBrand { get; set; }
 
 
     }

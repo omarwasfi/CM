@@ -21,7 +21,7 @@ namespace CM.Library.Queries.Problem
 
         public async Task<ProblemDataModel> Handle(GetProblemByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _currentStateDBContext.Problems.FindAsync(request.Id)
+            return await _currentStateDBContext.Problems.FindAsync(request.Id);
         }
     }
 }

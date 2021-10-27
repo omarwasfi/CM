@@ -8,25 +8,25 @@ namespace CM.Server.Migrations.CurrentStateDatabase
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_OwendCarDataModel_AspNetUsers_PersonDataModelId",
-                table: "OwendCarDataModel");
+                name: "FK_OwnedCarDataModel_AspNetUsers_PersonDataModelId",
+                table: "OwnedCarDataModel");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_OwendCarDataModel",
-                table: "OwendCarDataModel");
+                name: "PK_OwnedCarDataModel",
+                table: "OwnedCarDataModel");
 
             migrationBuilder.RenameTable(
-                name: "OwendCarDataModel",
-                newName: "OwendCars");
+                name: "OwnedCarDataModel",
+                newName: "OwnedCars");
 
             migrationBuilder.RenameIndex(
-                name: "IX_OwendCarDataModel_PersonDataModelId",
-                table: "OwendCars",
-                newName: "IX_OwendCars_PersonDataModelId");
+                name: "IX_OwnedCarDataModel_PersonDataModelId",
+                table: "OwnedCars",
+                newName: "IX_OwnedCars_PersonDataModelId");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_OwendCars",
-                table: "OwendCars",
+                name: "PK_OwnedCars",
+                table: "OwnedCars",
                 column: "Id");
 
             migrationBuilder.CreateTable(
@@ -194,8 +194,8 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                 column: "ProblemTypeId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_OwendCars_AspNetUsers_PersonDataModelId",
-                table: "OwendCars",
+                name: "FK_OwnedCars_AspNetUsers_PersonDataModelId",
+                table: "OwnedCars",
                 column: "PersonDataModelId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",
@@ -205,8 +205,8 @@ namespace CM.Server.Migrations.CurrentStateDatabase
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_OwendCars_AspNetUsers_PersonDataModelId",
-                table: "OwendCars");
+                name: "FK_OwnedCars_AspNetUsers_PersonDataModelId",
+                table: "OwnedCars");
 
             migrationBuilder.DropTable(
                 name: "Cars");
@@ -224,26 +224,26 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                 name: "ProblemTypes");
 
             migrationBuilder.DropPrimaryKey(
-                name: "PK_OwendCars",
-                table: "OwendCars");
+                name: "PK_OwnedCars",
+                table: "OwnedCars");
 
             migrationBuilder.RenameTable(
-                name: "OwendCars",
-                newName: "OwendCarDataModel");
+                name: "OwnedCars",
+                newName: "OwnedCarDataModel");
 
             migrationBuilder.RenameIndex(
-                name: "IX_OwendCars_PersonDataModelId",
-                table: "OwendCarDataModel",
-                newName: "IX_OwendCarDataModel_PersonDataModelId");
+                name: "IX_OwnedCars_PersonDataModelId",
+                table: "OwnedCarDataModel",
+                newName: "IX_OwnedCarDataModel_PersonDataModelId");
 
             migrationBuilder.AddPrimaryKey(
-                name: "PK_OwendCarDataModel",
-                table: "OwendCarDataModel",
+                name: "PK_OwnedCarDataModel",
+                table: "OwnedCarDataModel",
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_OwendCarDataModel_AspNetUsers_PersonDataModelId",
-                table: "OwendCarDataModel",
+                name: "FK_OwnedCarDataModel_AspNetUsers_PersonDataModelId",
+                table: "OwnedCarDataModel",
                 column: "PersonDataModelId",
                 principalTable: "AspNetUsers",
                 principalColumn: "Id",

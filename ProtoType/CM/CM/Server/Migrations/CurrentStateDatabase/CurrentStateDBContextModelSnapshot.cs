@@ -132,7 +132,7 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                     b.ToTable("OfferFixRequests");
                 });
 
-            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OwendCarDataModel", b =>
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OwnedCarDataModel", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -144,14 +144,14 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("PersonDataModelId")
+                    b.Property<string>("PersonId")
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonDataModelId");
+                    b.HasIndex("PersonId");
 
-                    b.ToTable("OwendCars");
+                    b.ToTable("OwnedCars");
                 });
 
             modelBuilder.Entity("CM.Library.DataModels.BusinessModels.ProblemDataModel", b =>
@@ -170,6 +170,13 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                     b.Property<string>("Location")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OwnedCarId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PersonId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("ProblemTypeId")
                         .HasColumnType("nvarchar(450)");
 
@@ -178,6 +185,10 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OwnedCarId");
+
+                    b.HasIndex("PersonId");
 
                     b.HasIndex("ProblemTypeId");
 
@@ -455,18 +466,34 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                     b.Navigation("To");
                 });
 
-            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OwendCarDataModel", b =>
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OwnedCarDataModel", b =>
                 {
-                    b.HasOne("CM.Library.DataModels.PersonDataModel", null)
-                        .WithMany("OwendCars")
-                        .HasForeignKey("PersonDataModelId");
+                    b.HasOne("CM.Library.DataModels.PersonDataModel", "Person")
+                        .WithMany("OwnedCars")
+                        .HasForeignKey("PersonId");
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("CM.Library.DataModels.BusinessModels.ProblemDataModel", b =>
                 {
+                    b.HasOne("CM.Library.DataModels.BusinessModels.OwnedCarDataModel", "OwnedCar")
+                        .WithMany()
+                        .HasForeignKey("OwnedCarId");
+
+                    b.HasOne("CM.Library.DataModels.PersonDataModel", "Person")
+                        .WithMany("Problems")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CM.Library.DataModels.BusinessModels.ProblemTypeDataModel", "ProblemType")
                         .WithMany()
                         .HasForeignKey("ProblemTypeId");
+
+                    b.Navigation("OwnedCar");
+
+                    b.Navigation("Person");
 
                     b.Navigation("ProblemType");
                 });
@@ -524,7 +551,9 @@ namespace CM.Server.Migrations.CurrentStateDatabase
 
             modelBuilder.Entity("CM.Library.DataModels.PersonDataModel", b =>
                 {
-                    b.Navigation("OwendCars");
+                    b.Navigation("OwnedCars");
+
+                    b.Navigation("Problems");
                 });
 #pragma warning restore 612, 618
         }

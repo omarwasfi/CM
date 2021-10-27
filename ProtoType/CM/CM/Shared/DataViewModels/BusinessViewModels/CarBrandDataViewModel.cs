@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CM.Shared.DataViewModels.BusinessViewModels
 {
-    public class CarBrandViewModel
+    public class CarBrandDataViewModel
     {
         public string Id { get; set; }
 

@@ -25,7 +25,7 @@ namespace CM.Library.DataModels.BusinessModels
         public virtual PersonDataModel Person { get; set; }
 
         [Required]
-        public virtual OwendCarDataModel OwnedCar { get; set; }
+        public virtual OwnedCarDataModel OwnedCar { get; set; }
 
 
 

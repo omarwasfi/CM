@@ -10,6 +10,10 @@ namespace CM.Library.DataModels.BusinessModels
 {
     public class CarDataModel
     {
+        public CarDataModel()
+        {
+            this.OwnedCars = new HashSet<OwnedCarDataModel>();
+        }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
@@ -19,9 +23,11 @@ namespace CM.Library.DataModels.BusinessModels
         public string Name { get; set; }
 
         [Column(TypeName = "nvarchar(200)")]
-        public string Descrition { get; set; }
+        public string Description { get; set; }
 
         public virtual CarBrandDataModel CarBrand { get; set; }
+
+        public virtual ICollection<OwnedCarDataModel> OwnedCars { get; set; }
 
     }
 }

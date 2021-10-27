@@ -8,20 +8,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CM.Library.Queries.OwendCar
+namespace CM.Library.Queries.OwnedCar
 {
-    public class GetOwendCarByIdQueryHandler : IRequestHandler<GetOwendCarByIdQuery, OwendCarDataModel>
+    public class GetOwnedCarByIdQueryHandler : IRequestHandler<GetOwnedCarByIdQuery, OwnedCarDataModel>
     {
         private readonly CurrentStateDBContext _currentStateDBContext;
 
-        public GetOwendCarByIdQueryHandler(CurrentStateDBContext currentStateDBContext)
+        public GetOwnedCarByIdQueryHandler(CurrentStateDBContext currentStateDBContext)
         {
             _currentStateDBContext = currentStateDBContext;
         }
 
-        public async Task<OwendCarDataModel> Handle(GetOwendCarByIdQuery request, CancellationToken cancellationToken)
+        public async Task<OwnedCarDataModel> Handle(GetOwnedCarByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _currentStateDBContext.OwendCars.FindAsync(request.Id);
+            return await _currentStateDBContext.OwnedCars.FindAsync(request.Id);
         }
     }
 }

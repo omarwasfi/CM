@@ -1,4 +1,4 @@
-﻿using CM.Library.Queries.OwendCar;
+﻿using CM.Library.Queries.OwnedCar;
 using CM.Library.Queries.Person;
 using CM.Library.Queries.ProblemType;
 using FluentValidation;
@@ -31,10 +31,10 @@ namespace CM.Library.Events.Problem
                 return await beAnExistPersonId(PersonId);
             }).WithMessage("This person id not exist");
 
-            RuleFor(x => x.OwendCarId).MustAsync(async (OwendCarId, cancellation) =>
+            RuleFor(x => x.OwnedCarId).MustAsync(async (OwnedCarId, cancellation) =>
             {
-                return await beAnExistOwnedCarId(OwendCarId);
-            }).WithMessage("This Owend car id not exist");
+                return await beAnExistOwnedCarId(OwnedCarId);
+            }).WithMessage("This Owned car id not exist");
 
         }
 
@@ -56,7 +56,7 @@ namespace CM.Library.Events.Problem
 
         private async Task<bool> beAnExistOwnedCarId(string id)
         {
-            if (await _mediator.Send(new GetOwendCarByIdQuery(id)) != null)
+            if (await _mediator.Send(new GetOwnedCarByIdQuery(id)) != null)
                 return true;
             else
                 return false;

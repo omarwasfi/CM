@@ -17,7 +17,7 @@ namespace CM.Shared.DataViewModels.BusinessViewModels
         public string State { get; set; }
 
         public PersonDataViewModel Person { get; set; }
-        public OwendCarDataViewModel OwendCar { get; set; }
+        public OwnedCarDataViewModel OwnedCar { get; set; }
 
         [Required]
         [MaxLength(400, ErrorMessage = "Description Can't be more than 400 characters")]

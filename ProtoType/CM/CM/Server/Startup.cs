@@ -50,6 +50,7 @@ namespace CM.Server
 
             services.AddCors();
 
+            services.AddControllers().AddControllersAsServices();
 
             services.AddMediatR(typeof(CMLibraryMediatREntryPoint).Assembly);
 

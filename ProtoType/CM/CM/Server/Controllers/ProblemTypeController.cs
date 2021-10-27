@@ -39,23 +39,23 @@ namespace CM.Server.Controllers
             {
                 return BadRequest();
             }
-            
-            
+
+
         }
 
         [Authorize]
-        [HttpGet("Get")]
+        [HttpGet("GetAll")]
 
-        public async Task<List<ProblemTypeDataViewModel>> GetAsync()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
-                
+
                 List<ProblemTypeDataModel> problemTypeDataModels = await _mediator.Send(new GetProblemTypesQuery());
 
                 List<ProblemTypeDataViewModel> problemTypeDataViewModels = new List<ProblemTypeDataViewModel>();
 
-                foreach(ProblemTypeDataModel problemType in problemTypeDataModels)
+                foreach (ProblemTypeDataModel problemType in problemTypeDataModels)
                 {
                     ProblemTypeDataViewModel problemTypeDataViewModel = new ProblemTypeDataViewModel();
                     problemTypeDataViewModel.Id = problemType.Id;
@@ -64,12 +64,34 @@ namespace CM.Server.Controllers
                     problemTypeDataViewModels.Add(problemTypeDataViewModel);
                 }
 
-                return problemTypeDataViewModels;
+                return Ok(problemTypeDataViewModels);
             }
             catch
             {
-                return null;
+                return BadRequest();
             }
+        }
+
+        [Authorize]
+        [HttpGet("GetProblemTypeById")]
+        public async Task<IActionResult> GetProblemTypeById(string id)
+        {
+            try
+            {
+                ProblemTypeDataModel problemTypeDataModel = await _mediator.Send(new GetProblemTypeByIdQuery(id));
+
+                ProblemTypeDataViewModel problemTypeDataViewModel = new ProblemTypeDataViewModel();
+
+                problemTypeDataViewModel.Id = problemTypeDataModel.Id;
+                problemTypeDataViewModel.Name = problemTypeDataModel.Name;
+
+                return Ok(problemTypeDataViewModel);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+            
         }
     }
 }

@@ -16,7 +16,7 @@ namespace CM.Library.DBContexts
         public DbSet<CarDataModel> Cars { get; set; }
         public DbSet<FixRequestDataModel> FixRequests { get; set; }
         public DbSet<OfferFixRequestDataModel> OfferFixRequests { get; set; }
-        public DbSet<OwendCarDataModel> OwendCars { get; set; }
+        public DbSet<OwnedCarDataModel> OwnedCars { get; set; }
         public DbSet<ProblemDataModel> Problems { get; set; }
         public DbSet<ProblemTypeDataModel> ProblemTypes { get; set; }
 

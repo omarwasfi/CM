@@ -39,7 +39,7 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                     b.ToTable("CarBrands");
                 });
 
-            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OwendCarDataModel", b =>
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OwnedCarDataModel", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,7 +58,7 @@ namespace CM.Server.Migrations.CurrentStateDatabase
 
                     b.HasIndex("PersonDataModelId");
 
-                    b.ToTable("OwendCarDataModel");
+                    b.ToTable("OwnedCarDataModel");
                 });
 
             modelBuilder.Entity("CM.Library.DataModels.PersonDataModel", b =>
@@ -263,10 +263,10 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OwendCarDataModel", b =>
+            modelBuilder.Entity("CM.Library.DataModels.BusinessModels.OwnedCarDataModel", b =>
                 {
                     b.HasOne("CM.Library.DataModels.PersonDataModel", null)
-                        .WithMany("OwendCars")
+                        .WithMany("OwnedCars")
                         .HasForeignKey("PersonDataModelId");
                 });
 
@@ -323,7 +323,7 @@ namespace CM.Server.Migrations.CurrentStateDatabase
 
             modelBuilder.Entity("CM.Library.DataModels.PersonDataModel", b =>
                 {
-                    b.Navigation("OwendCars");
+                    b.Navigation("OwnedCars");
                 });
 #pragma warning restore 612, 618
         }

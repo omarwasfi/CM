@@ -10,9 +10,9 @@ namespace CM.Shared.DataViewModels
 {
     public class PersonDataViewModel
     {
-        public string Id { get;}
+        public string Id { get; set; }
 
-        public string UserName { get;}
+        public string UserName { get; set; }
 
         [MaxLength(100, ErrorMessage = "FirstName Can't be more than 100 characters")]
         public string FirstName { get; set; }
@@ -23,9 +23,9 @@ namespace CM.Shared.DataViewModels
         [Required]
         public bool IsAFixer { get; set; }
 
-        public List<OwendCarDataViewModel> OwendCars { get; set; }
+        
 
-        public List<ProblemDataViewModel> Problems { get; set; }
+        
 
 
     }

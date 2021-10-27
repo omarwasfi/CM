@@ -8,8 +8,12 @@ using System.Threading.Tasks;
 
 namespace CM.Library.DataModels.BusinessModels
 {
-    public class OwendCarDataModel
+    public class OwnedCarDataModel
     {
+        public OwnedCarDataModel()
+        {
+            this.Problems = new HashSet<ProblemDataModel>();
+        }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,5 +24,11 @@ namespace CM.Library.DataModels.BusinessModels
 
         [Column(TypeName = "nvarchar(200)")]
         public string Description { get; set; }
+
+        public virtual CarDataModel Car { get; set; }
+
+        public virtual PersonDataModel Person { get; set; }
+
+        public virtual ICollection<ProblemDataModel> Problems { get; set; }
     }
 }

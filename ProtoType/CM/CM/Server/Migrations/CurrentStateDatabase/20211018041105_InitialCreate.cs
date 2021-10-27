@@ -168,7 +168,7 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                 });
 
             migrationBuilder.CreateTable(
-                name: "OwendCarDataModel",
+                name: "OwnedCarDataModel",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -178,9 +178,9 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OwendCarDataModel", x => x.Id);
+                    table.PrimaryKey("PK_OwnedCarDataModel", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OwendCarDataModel_AspNetUsers_PersonDataModelId",
+                        name: "FK_OwnedCarDataModel_AspNetUsers_PersonDataModelId",
                         column: x => x.PersonDataModelId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -227,8 +227,8 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OwendCarDataModel_PersonDataModelId",
-                table: "OwendCarDataModel",
+                name: "IX_OwnedCarDataModel_PersonDataModelId",
+                table: "OwnedCarDataModel",
                 column: "PersonDataModelId");
         }
 
@@ -253,7 +253,7 @@ namespace CM.Server.Migrations.CurrentStateDatabase
                 name: "CarBrands");
 
             migrationBuilder.DropTable(
-                name: "OwendCarDataModel");
+                name: "OwnedCarDataModel");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
