@@ -1,6 +1,8 @@
 ﻿using CM.Library.DataModels.BusinessModels;
+using CM.Library.Events.Car;
 using CM.Library.Queries.Car;
 using CM.Shared.DataViewModels.BusinessViewModels;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +25,25 @@ namespace CM.Server.Controllers
         {
             _mediator = mediator;
             _CarBrandController = carBrandContoller;
+        }
+
+        [HttpPost("AddNewCar")]
+        public async Task<IActionResult> AddNewCar(CarDataViewModel carDataView)
+        {
+            try
+            {
+                CarDataModel carDataModel = await _mediator.Send(new AddCarCommand(carDataView.Name, carDataView.Description, carDataView.CarBrand.Id));
+                return Ok(carDataModel.Id);
+
+            }
+            catch(ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet("GetCarById")]
@@ -49,7 +70,7 @@ namespace CM.Server.Controllers
             carDataViewModel.Name = carDataModel.Name;
             carDataViewModel.Description = carDataModel.Description;
 
-            IActionResult carBrandControllerIActionResult = await _CarBrandController.GetCarBrandById(carDataViewModel.CarBrand.Id);
+            IActionResult carBrandControllerIActionResult = await _CarBrandController.GetCarBrandById(carDataModel.CarBrand.Id);
             OkObjectResult carBrandControllerOkObjectResult = carBrandControllerIActionResult as OkObjectResult;
             carDataViewModel.CarBrand = carBrandControllerOkObjectResult.Value as CarBrandDataViewModel;
         }

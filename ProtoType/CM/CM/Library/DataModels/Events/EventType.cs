@@ -20,6 +20,10 @@ namespace CM.Library.DataModels.Events
         AddCarBrand,
         #endregion
 
+        #region Car
+        AddCar,
+        #endregion
+
         #region ProblemType
 
         AddNewProblemType,
