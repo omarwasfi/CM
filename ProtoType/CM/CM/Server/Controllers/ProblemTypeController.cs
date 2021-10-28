@@ -25,15 +25,14 @@ namespace CM.Server.Controllers
         {
             this._mediator = mediator;
         }
-        [Authorize]
         [HttpPost("Add")]
 
         public async Task<IActionResult> Add(ProblemTypeDataViewModel problemTypeDataView)
         {
             try
             {
-                await _mediator.Send(new AddProblemTypeCommand(problemTypeDataView.Name));
-                return Ok();
+                ProblemTypeDataModel problemTypeDataModel =  await _mediator.Send(new AddProblemTypeCommand(problemTypeDataView.Name));
+                return Ok(problemTypeDataModel.Id);
             }
             catch
             {
@@ -43,7 +42,6 @@ namespace CM.Server.Controllers
 
         }
 
-        [Authorize]
         [HttpGet("GetAll")]
 
         public async Task<IActionResult> GetAll()
@@ -72,7 +70,6 @@ namespace CM.Server.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet("GetProblemTypeById")]
         public async Task<IActionResult> GetProblemTypeById(string id)
         {

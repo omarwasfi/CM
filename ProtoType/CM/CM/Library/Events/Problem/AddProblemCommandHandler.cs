@@ -39,6 +39,8 @@ namespace CM.Library.Events.Problem
         {
             ProblemDataModel problemDataModel = new ProblemDataModel();
             problemDataModel.ProblemType = await _currentStateDBContext.ProblemTypes.FindAsync(request.ProblemTypeId);
+            problemDataModel.Person = await _currentStateDBContext.Users.FindAsync(request.PersonId);
+            problemDataModel.OwnedCar = await _currentStateDBContext.OwnedCars.FindAsync(request.OwnedCarId);
             problemDataModel.State = ProblemState.OnHold;
             problemDataModel.Description = request.Description;
             problemDataModel.DateTime = DateTime.Now;

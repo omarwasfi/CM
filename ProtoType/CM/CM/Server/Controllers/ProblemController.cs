@@ -5,6 +5,7 @@ using CM.Library.Queries.ProblemType;
 using CM.Shared;
 using CM.Shared.DataViewModels;
 using CM.Shared.DataViewModels.BusinessViewModels;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
@@ -50,6 +51,10 @@ namespace CM.Server.Controllers
                     )) ;
                 return Ok(newProblemDataModel.Id);
                
+            }
+            catch(ValidationException v)
+            {
+                return ValidationProblem(v.Message);
             }
             catch
             {
@@ -112,7 +117,7 @@ namespace CM.Server.Controllers
 
             problemDataView.Id = problem.Id;
 
-            IActionResult problemTypeControllerActionResult = await _problemTypeController.GetProblemTypeById(problem.Id);
+            IActionResult problemTypeControllerActionResult = await _problemTypeController.GetProblemTypeById(problem.ProblemType.Id);
             OkObjectResult problemTypeControlleOkObjectResult = problemTypeControllerActionResult as OkObjectResult;
             problemDataView.ProblemType = problemTypeControlleOkObjectResult.Value as ProblemTypeDataViewModel;
 
