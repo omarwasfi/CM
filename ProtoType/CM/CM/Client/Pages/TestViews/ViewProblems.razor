@@ -1,0 +1,77 @@
+﻿@page "/ViewProblems"
+@inject HttpClient Http
+s
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            @*<EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="newProblemDataViewModel">
+            <DataAnnotationsValidator />
+            <InputText class="form-control" @bind-Value="newProblemDataViewModel.Name" autofocus placeholder="Name" />
+            <ValidationMessage For="@(() => newProblemDataViewModel.Name)" />
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
+            <label class="text-danger">@error</label>
+        </EditForm>
+            *@
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <SfGrid DataSource="@problems" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true">
+                <GridColumns>
+                    <GridColumn Field=@nameof(ProblemDataViewModel.Id) HeaderText="Problem ID" IsPrimaryKey="true"></GridColumn>
+                    <GridColumn Field=@nameof(ProblemDataViewModel.Description) HeaderText="Description"></GridColumn>
+                    <GridColumn Field=@nameof(ProblemDataViewModel.DateTime) HeaderText="date time"></GridColumn>
+                    <GridColumn Field=@nameof(ProblemDataViewModel.State) HeaderText="Status"></GridColumn>
+                    <GridColumn Field=@nameof(ProblemDataViewModel.Location) HeaderText="Location"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
+
+@code {
+
+        private ProblemDataViewModel newProblemDataViewModel = new ProblemDataViewModel() {
+            ProblemType = new ProblemTypeDataViewModel() , Person = new PersonDataViewModel() , OwnedCar = new OwnedCarDataViewModel() {Car = new CarDataViewModel()} };
+
+        string error { get; set; }
+
+
+        private List<ProblemDataViewModel> problems = new List<ProblemDataViewModel>()
+        {
+             new ProblemDataViewModel()
+            {
+                ProblemType = new ProblemTypeDataViewModel(),
+                Person = new PersonDataViewModel(),
+                OwnedCar = new OwnedCarDataViewModel() { Car = new CarDataViewModel() }
+            }
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        error = null;
+        newProblemDataViewModel = new ProblemDataViewModel();
+        problems = await Http.GetFromJsonAsync<List<ProblemDataViewModel>>("api/problem/getall");
+
+    }
+
+    private async Task OnSubmit()
+    {
+
+        error = null;
+        try
+        {
+            await Http.PostAsJsonAsync("api/problemtype/add", newProblemDataViewModel);
+            this.StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+
+}

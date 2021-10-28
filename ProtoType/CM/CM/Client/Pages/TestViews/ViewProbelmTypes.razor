@@ -1,0 +1,62 @@
+﻿@page "/ViewProbelmTypes"
+@inject HttpClient Http
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <EditForm class="form-signin" OnValidSubmit="OnSubmit" Model="newProblemTypeDataViewModel">
+                <DataAnnotationsValidator />
+                <InputText  class="form-control" @bind-Value="newProblemTypeDataViewModel.Name" autofocus placeholder="Name" />
+                <ValidationMessage For="@(() => newProblemTypeDataViewModel.Name)" />
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Add</button>
+                <label class="text-danger">@error</label>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+<div class="col-lg-12 control-section">
+    <div class="content-wrapper">
+        <div class="row">
+            <SfGrid DataSource="@problemTypes" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true"  AllowPaging="true">
+                <GridColumns>
+                    <GridColumn Field=@nameof(ProblemTypeDataViewModel.Id) HeaderText="Problem Type ID"  IsPrimaryKey="true" Width="120"></GridColumn>
+                    <GridColumn Field=@nameof(ProblemTypeDataViewModel.Name) HeaderText="Name"  Width="150"></GridColumn>
+                </GridColumns>
+            </SfGrid>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    private ProblemTypeDataViewModel newProblemTypeDataViewModel = new ProblemTypeDataViewModel();
+    string error { get; set; }
+
+
+    private List<ProblemTypeDataViewModel> problemTypes = new List<ProblemTypeDataViewModel>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        error = null;
+        newProblemTypeDataViewModel = new ProblemTypeDataViewModel();
+        problemTypes = await Http.GetFromJsonAsync<List<ProblemTypeDataViewModel>>("api/problemtype/getall");
+
+    }
+
+    private async Task OnSubmit()
+    {
+
+        error = null;
+        try
+        {
+            await Http.PostAsJsonAsync("api/problemtype/add",newProblemTypeDataViewModel);
+            this.StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            error = ex.Message;
+        }
+    }
+
+}
