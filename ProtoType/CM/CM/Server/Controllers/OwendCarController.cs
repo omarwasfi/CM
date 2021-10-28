@@ -1,7 +1,9 @@
 ﻿using CM.Library.DataModels.BusinessModels;
+using CM.Library.Events.OwnedCar;
 using CM.Library.Queries.OwnedCar;
 using CM.Shared.DataViewModels;
 using CM.Shared.DataViewModels.BusinessViewModels;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +30,31 @@ namespace CM.Server.Controllers
             _CarController = carController;
         }
 
+        [HttpPost("AddNewOwnedCar")]
+        public async Task<IActionResult> AddNewOwnedCar(OwnedCarDataViewModel ownedCarDataView)
+        {
+            try
+            {
+                OwnedCarDataModel ownedCarDataModel = await _mediator.Send
+                    (new AddOwnedCarCommand(
+                        ownedCarDataView.Name, 
+                        ownedCarDataView.Description, 
+                        ownedCarDataView.Car.Id,
+                        ownedCarDataView.Person.Id));
+
+                return Ok(ownedCarDataModel.Id);
+            }
+            catch(ValidationException v)
+            {
+                return BadRequest(v.Message);
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+
         [HttpGet("GetOwnedCarById")]
         public async Task<IActionResult> GetOwnedCarById(string id)
         {
@@ -52,7 +79,7 @@ namespace CM.Server.Controllers
             OwnedCarDataViewModel.Name = OwnedCarDataModel.Name;
             OwnedCarDataViewModel.Description = OwnedCarDataViewModel.Description;
 
-            IActionResult personContollerIActionResult = await _personController.GetPersonById(OwnedCarDataModel.Id);
+            IActionResult personContollerIActionResult = await _personController.GetPersonById(OwnedCarDataModel.Person.Id);
             OkObjectResult personContollerOkObjectResult = personContollerIActionResult as OkObjectResult;
             OwnedCarDataViewModel.Person = personContollerOkObjectResult.Value as PersonDataViewModel;
 

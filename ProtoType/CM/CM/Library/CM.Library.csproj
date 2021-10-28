@@ -18,7 +18,6 @@
   <ItemGroup>
     <Folder Include="DataProcesse\" />
     <Folder Include="Events\FixRequest\" />
-    <Folder Include="Events\OwnedCar\" />
     <Folder Include="Events\OfferFixRequest\" />
     <Folder Include="Queries\FixRequest\" />
     <Folder Include="Queries\OfferFixRequest\" />

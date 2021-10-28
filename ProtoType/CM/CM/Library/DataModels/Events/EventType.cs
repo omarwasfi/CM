@@ -22,6 +22,7 @@ namespace CM.Library.DataModels.Events
 
         #region Car
         AddCar,
+        AddOwnedCar,
         #endregion
 
         #region ProblemType

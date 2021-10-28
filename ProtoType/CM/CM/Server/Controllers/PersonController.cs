@@ -32,7 +32,7 @@ namespace CM.Server.Controllers
 
                 PersonDataViewModel personDataViewModel = new PersonDataViewModel();
                 ConvertPersonDataModelToPersonDataViewModel(personDataModel, personDataViewModel);
-                return Ok();
+                return Ok(personDataViewModel);
             }
             catch
             {
