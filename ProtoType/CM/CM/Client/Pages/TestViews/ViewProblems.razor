@@ -20,13 +20,18 @@ s
 <div class="col-lg-12 control-section">
     <div class="content-wrapper">
         <div class="row">
-            <SfGrid DataSource="@problems" AllowSorting="true" AllowExcelExport="true" AllowPdfExport="true" AllowPaging="true">
+            <SfGrid DataSource="@problems" AllowFiltering="true"  AllowTextWrap="true" AllowSelection="true" EnableHover="false" AllowPaging="true">
+                <GridFilterSettings Type="Syncfusion.Blazor.Grids.FilterType.Menu"></GridFilterSettings>
                 <GridColumns>
                     <GridColumn Field=@nameof(ProblemDataViewModel.Id) HeaderText="Problem ID" IsPrimaryKey="true"></GridColumn>
+                    <GridColumn Field="Person.UserName" HeaderText="Username"></GridColumn>
+                    <GridColumn Field="OwnedCar.Name" HeaderText="OwendCar"></GridColumn>
+                    <GridColumn Field="ProblemType.Name" HeaderText="Problem Type"></GridColumn>
                     <GridColumn Field=@nameof(ProblemDataViewModel.Description) HeaderText="Description"></GridColumn>
                     <GridColumn Field=@nameof(ProblemDataViewModel.DateTime) HeaderText="date time"></GridColumn>
                     <GridColumn Field=@nameof(ProblemDataViewModel.State) HeaderText="Status"></GridColumn>
                     <GridColumn Field=@nameof(ProblemDataViewModel.Location) HeaderText="Location"></GridColumn>
+
                 </GridColumns>
             </SfGrid>
         </div>
