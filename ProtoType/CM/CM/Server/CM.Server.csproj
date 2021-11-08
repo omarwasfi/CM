@@ -42,6 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Services\UserProvider\" />
     <Folder Include="wwwroot\App_Data\Logs\" />
   </ItemGroup>
 

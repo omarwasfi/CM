@@ -9,9 +9,9 @@ namespace CM.Server.Services.Chat
 {
     public class ChatHub : Hub
     {
-        public async Task SendMessage(string user, string message)
+        public async Task SendMessage(string fromUser, string toUser, string message)
         {
-            await Clients.All.SendAsync("ReceiveMessage", user, message);
+            await Clients.Users(fromUser,toUser).SendAsync("ReceiveMessage",fromUser, message);
         }
 
     }
