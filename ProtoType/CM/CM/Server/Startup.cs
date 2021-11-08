@@ -23,6 +23,7 @@ using Microsoft.Net.Http.Headers;
 using FluentValidation;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server;
+using CM.Server.Services.Chat;
 
 namespace CM.Server
 {
@@ -41,6 +42,8 @@ namespace CM.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR();
+
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -117,6 +120,12 @@ namespace CM.Server
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
+
             // Server Side Blazor doesn't register HttpClient by default
             // Thanks to Robin Sue - Suchiman https://github.com/Suchiman/BlazorDualMode
             if (!services.Any(x => x.ServiceType == typeof(HttpClient)))
@@ -139,6 +148,8 @@ namespace CM.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseResponseCompression();
+
 
             if (env.IsDevelopment())
             {
@@ -178,6 +189,7 @@ namespace CM.Server
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chathub");
                 endpoints.MapFallbackToFile("index.html");
             });
 
