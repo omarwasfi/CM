@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace CM.Library
 {
     public class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : IRequest<TResponse>
     {
 
         public LoggingBehavior()
