@@ -30,7 +30,8 @@ namespace CM.Library.Events.Person
             }).WithMessage("The password is not correct");
 
         }
-            private async Task<bool> beARegisteredUsername(string username)
+
+        private async Task<bool> beARegisteredUsername(string username)
         {
             PersonDataModel user = await _userManager.FindByNameAsync(username);
             

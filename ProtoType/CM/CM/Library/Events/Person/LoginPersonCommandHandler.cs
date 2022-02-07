@@ -1,5 +1,6 @@
 ﻿using CM.Library.DataModels;
 using CM.Library.DataModels.Events;
+using CM.Library.Events.Token;
 using CM.Library.DBContexts;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -10,22 +11,26 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace CM.Library.Events.Person
 {
-    public class LoginPersonCommandHandler : IRequestHandler<LoginPersonCommand>
+    public class LoginPersonCommandHandler : IRequestHandler<LoginPersonCommand, string>
     {
         private readonly EventsDBContext _eventsDBContext;
 
         private readonly UserManager<PersonDataModel> _userManager;
         private readonly SignInManager<PersonDataModel> _signInManager;
-        public LoginPersonCommandHandler(EventsDBContext eventsDBContext, UserManager<PersonDataModel> userManager, SignInManager<PersonDataModel> signInManager)
+
+        private readonly IMediator _mediator;
+        public LoginPersonCommandHandler(IMediator mediator,EventsDBContext eventsDBContext, UserManager<PersonDataModel> userManager, SignInManager<PersonDataModel> signInManager)
         {
             this._eventsDBContext = eventsDBContext;
             _userManager = userManager;
             _signInManager = signInManager;
+            this._mediator = mediator;
         }
-        public async Task<Unit> Handle(LoginPersonCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(LoginPersonCommand request, CancellationToken cancellationToken)
         {
             EventDataModel loginPersonEvent = new EventDataModel();
 
@@ -39,7 +44,9 @@ namespace CM.Library.Events.Person
 
             await applyEventToTheCurrentState(request);
 
-            return Unit.Value;
+
+
+            return await _mediator.Send(new CreateTokenByUserNameCommand(request.Usernamme));
         }
         private async Task applyEventToTheCurrentState(LoginPersonCommand request)
         {

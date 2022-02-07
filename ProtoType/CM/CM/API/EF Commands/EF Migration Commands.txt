@@ -1,0 +1,12 @@
+﻿
+Add-Migration InitialCreate -context EventsDBContext -outputdir Migrations/EventsDatabase
+Add-Migration InitialCreate -context CurrentStateDBContext -outputdir Migrations/CurrentStateDatabase
+Update-database  -context CurrentStateDBContext
+Update-database  -context EventsDBContext
+
+
+dotnet ef migrations add InitialCreate  --context EventsDBContext --output-dir Migrations/EventsDatabase
+dotnet ef database update --context EventsDBContext
+
+dotnet ef migrations add InitialCreate  --context CurrentStateDBContext --output-dir Migrations/CurrentStateDatabase
+dotnet ef database update --context CurrentStateDBContext

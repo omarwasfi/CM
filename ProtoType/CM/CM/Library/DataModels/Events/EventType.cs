@@ -13,6 +13,7 @@ namespace CM.Library.DataModels.Events
         LoginPerson,
         RegisterPerson,
         LogoutPerson,
+        GenerateToken,
 
         #endregion
 

@@ -1,6 +1,7 @@
 ﻿using CM.Library.DataModels;
 using CM.Library.DataModels.Events;
 using CM.Library.DBContexts;
+using CM.Library.Events.Token;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
@@ -13,16 +14,19 @@ using System.Threading.Tasks;
 
 namespace CM.Library.Events.Person
 {
-    public class RegisterPersonHandler : IRequestHandler<RegisterPersonCommand, PersonDataModel>
+    public class RegisterPersonHandler : IRequestHandler<RegisterPersonCommand, string>
     {
         private readonly EventsDBContext _eventsDBContext;
         private readonly UserManager<PersonDataModel> _userManager;
-        public RegisterPersonHandler(EventsDBContext eventsDBContext, UserManager<PersonDataModel> userManager)
+        private readonly IMediator _mediator;
+
+        public RegisterPersonHandler(IMediator mediator, EventsDBContext eventsDBContext, UserManager<PersonDataModel> userManager)
         {
             this._eventsDBContext = eventsDBContext;
+            this._mediator = mediator;
             _userManager = userManager;
         }
-        public async Task<PersonDataModel> Handle(RegisterPersonCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle( RegisterPersonCommand request, CancellationToken cancellationToken)
         {
             EventDataModel registerPersonEvent = new EventDataModel();
             
@@ -35,12 +39,17 @@ namespace CM.Library.Events.Person
 
             await applyEventToTheCurrentState(request);
 
-            return request.PersonDataModel;
+            return await _mediator.Send(new CreateTokenByUserNameCommand(request.UserName));
         }
 
         private async Task applyEventToTheCurrentState(RegisterPersonCommand request)
         {
-            await _userManager.CreateAsync(request.PersonDataModel , request.Password);
+            PersonDataModel person = new PersonDataModel()
+            {
+                UserName = request.UserName
+
+            };
+            await _userManager.CreateAsync(person, request.Password);
            
         }
     }

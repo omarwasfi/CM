@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace CM.Library.DBContexts
 {
+    [System.Data.Entity.DbConfigurationType(typeof(MySql.Data.EntityFramework.MySqlEFConfiguration))]
     public class EventsDBContext : DbContext 
     {
 
