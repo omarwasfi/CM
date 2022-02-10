@@ -15,7 +15,7 @@ namespace CM.API.Controllers
     [Route("[controller]")]
     public class AuthenticationController : ControllerBase
     {
-        public IMediator _mediator { get; set; }
+        private IMediator _mediator { get; set; }
 
         public AuthenticationController(IMediator mediator)
         {

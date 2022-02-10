@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,32 +15,28 @@ namespace CM.Library.Queries.Person
 {
     public class GetTheAuthorizedPersonQueryHandler : IRequestHandler<GetTheAuthorizedPersonQuery, PersonDataModel>
     {
-        private readonly AuthenticationStateProvider _authenticationStateProvider;
 
         private readonly CurrentStateDBContext _currentStateDBContext;
 
-        /*public GetTheAuthorizedPersonQueryHandler(AuthenticationStateProvider authenticationStateProvider , CurrentStateDBContext currentStateDBContext)
+        public GetTheAuthorizedPersonQueryHandler( CurrentStateDBContext currentStateDBContext)
         {
-            this._authenticationStateProvider = authenticationStateProvider;
             this._currentStateDBContext = currentStateDBContext;
-        }*/
+        }
 
         public async Task<PersonDataModel> Handle(GetTheAuthorizedPersonQuery request, CancellationToken cancellationToken)
         {
+            string userId = getTheUseId(request.ClaimsPrincipal);
 
-            string username = getUser(await getAuthenticationState(this._authenticationStateProvider)).Identity.Name;
-            return (PersonDataModel)_currentStateDBContext.Users.Where(x => x.UserName == username);
+            PersonDataModel person = await _currentStateDBContext.Users.FindAsync(userId);
+
+            return person;
         }
 
-
-
-        private async Task<AuthenticationState> getAuthenticationState(AuthenticationStateProvider authenticationStateProvider)
+        private string getTheUseId(ClaimsPrincipal claimsPrincipal)
         {
-            return await authenticationStateProvider.GetAuthenticationStateAsync();
+            ClaimsIdentity claimsIdentity = claimsPrincipal.Identity as ClaimsIdentity;
+            return claimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
-        private System.Security.Claims.ClaimsPrincipal getUser(AuthenticationState authenticationState)
-        {
-            return authenticationState.User;
-        }
+
     }
 }
