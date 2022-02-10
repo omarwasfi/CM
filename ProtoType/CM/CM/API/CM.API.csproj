@@ -26,6 +26,7 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.2" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +43,8 @@
     <None Remove="MediatR" />
     <None Remove="MediatR.Extensions.Microsoft.DependencyInjectionFixed" />
     <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+    <None Remove="MappingConfiguration\" />
+    <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\CM.Library.csproj">
@@ -55,6 +58,7 @@
     <Folder Include="EF Commands\" />
     <Folder Include="wwwroot\App_Data\UsersData\" />
     <Folder Include="wwwroot\App_Data\Default\" />
+    <Folder Include="MappingConfiguration\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\App_Data\UsersData\" />

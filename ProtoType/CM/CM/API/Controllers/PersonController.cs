@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
+using AutoMapper;
 using CM.Library.DataModels;
 using CM.Library.Queries.Person;
 using CM.Library.Queries.Picture;
@@ -17,10 +18,12 @@ namespace CM.API.Controllers
 	public class PersonController : ControllerBase
 	{
         private IMediator _mediator { get; set; }
+        private readonly IMapper _mapper;
 
-        public PersonController(IMediator mediator)
+        public PersonController(IMediator mediator , IMapper mapper)
 		{
             this._mediator = mediator;
+            this._mapper = mapper;
 		}
 
         /// <summary>
@@ -34,6 +37,8 @@ namespace CM.API.Controllers
             PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
 
             PersonDataViewModel personDataViewModel = new PersonDataViewModel();
+
+            personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
 
             personDataViewModel.ProfilePicture = new PicureBase64DataViewModel()
             {
