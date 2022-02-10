@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using AutoMapper;
 using CM.Library.DataModels;
+using CM.Library.Events.Person;
 using CM.Library.Queries.Person;
 using CM.Library.Queries.Picture;
 using CM.SharedWithClient;
@@ -31,7 +32,8 @@ namespace CM.API.Controllers
         /// If his picrure is not exists the return will be the default picture
         /// </summary>
         /// <returns></returns>
-        [HttpGet(Name = "GetPerson")]
+        [HttpGet]
+        [Route("GetPerson")]
         public async Task<ActionResult<PersonDataViewModel>> GetPerson()
         {
             PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
@@ -46,6 +48,31 @@ namespace CM.API.Controllers
             };
 
             return Ok(personDataViewModel) ;
+        }
+
+        /// <summary>
+        /// Expected to get MultipartFormDataContent in the HttpContent
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="fileExtension"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("UploadProfilePicture")]
+        public async Task<ActionResult<PicureBase64DataViewModel>> UploadProfilePicture(string fileName, string fileExtension)
+        {
+            IFormFileCollection formFiles = (IFormFileCollection)this.Request.Form;
+
+            await _mediator.Send(new UploadProfilePictureCommand(formFiles,fileName, fileExtension, this.User));
+
+            PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
+
+            PicureBase64DataViewModel base64DataViewModel =  new PicureBase64DataViewModel()
+            {
+                Base64 = await _mediator.Send(new GetPictureAsBase64Query(person.ProfilePicture))
+            };
+
+            return Ok(base64DataViewModel);
+
         }
     }
 }
