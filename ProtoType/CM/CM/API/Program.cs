@@ -142,19 +142,43 @@ builder.Services.AddAuthorization();
 
 
 
+var app = builder.Build();
+Log.Information("CM.API Started");
+
+// Configure the HTTP request pipeline.
+/*if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}*/
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseSerilogRequestLogging();
 
 
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+/*
 try
 {
 
     var app = builder.Build();
+    Log.Information("CM.API Started");
 
     // Configure the HTTP request pipeline.
-    /*if (app.Environment.IsDevelopment())
+    if (app.Environment.IsDevelopment())
     {
         app.UseSwagger();
         app.UseSwaggerUI();
-    }*/
+    }
 
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -171,7 +195,6 @@ try
 
     app.Run();
 
-    Log.Information("CM.API Started");
 
 
 }
@@ -185,4 +208,4 @@ finally
     Log.CloseAndFlush();
 }
 
-
+*/

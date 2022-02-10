@@ -20,7 +20,8 @@ namespace CM.Library.DBContexts
         public DbSet<OwnedCarDataModel> OwnedCars { get; set; }
         public DbSet<ProblemDataModel> Problems { get; set; }
         public DbSet<ProblemTypeDataModel> ProblemTypes { get; set; }
-
+        public DbSet<PictureDataModel> Pictures { get; set; }
+        public DbSet<OTPDataModel> OTPs { get; set; }
 
         public CurrentStateDBContext(DbContextOptions<CurrentStateDBContext> options) : base(options)
         {

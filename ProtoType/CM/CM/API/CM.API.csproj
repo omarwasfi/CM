@@ -50,5 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="EF Commands\" />
+    <Folder Include="wwwroot\App_Data\UsersData\" />
+    <Folder Include="wwwroot\App_Data\Default\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\App_Data\UsersData\" />
+    <Content Remove="wwwroot\App_Data\Default\" />
   </ItemGroup>
 </Project>
