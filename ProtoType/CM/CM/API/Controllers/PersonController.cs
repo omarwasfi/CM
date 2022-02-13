@@ -61,8 +61,6 @@ namespace CM.API.Controllers
         public async Task<ActionResult<PicureBase64DataViewModel>> UploadProfilePicture(IFormFile file, string fileName, string fileExtension)
         {
 
-            
-
             await _mediator.Send(new UploadProfilePictureCommand(file, fileName, fileExtension, this.User));
 
             PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));

@@ -25,6 +25,7 @@
     <Folder Include="Queries\OfferFixRequest\" />
     <Folder Include="Events\Token\" />
     <Folder Include="Queries\Picture\" />
+    <Folder Include="Events\Picture\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,5 +36,6 @@
     <None Remove="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
     <None Remove="Events\Token\" />
     <None Remove="Queries\Picture\" />
+    <None Remove="Events\Picture\" />
   </ItemGroup>
 </Project>
