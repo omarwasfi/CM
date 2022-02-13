@@ -58,11 +58,12 @@ namespace CM.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("UploadProfilePicture")]
-        public async Task<ActionResult<PicureBase64DataViewModel>> UploadProfilePicture(string fileName, string fileExtension)
+        public async Task<ActionResult<PicureBase64DataViewModel>> UploadProfilePicture(IFormFile file, string fileName, string fileExtension)
         {
-            IFormFileCollection formFiles = (IFormFileCollection)this.Request.Form;
 
-            await _mediator.Send(new UploadProfilePictureCommand(formFiles,fileName, fileExtension, this.User));
+            
+
+            await _mediator.Send(new UploadProfilePictureCommand(file, fileName, fileExtension, this.User));
 
             PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
 

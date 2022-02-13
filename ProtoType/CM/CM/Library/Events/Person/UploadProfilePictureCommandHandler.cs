@@ -26,18 +26,22 @@ namespace CM.Library.Events.Person
 
         public async Task<Unit> Handle(UploadProfilePictureCommand request, CancellationToken cancellationToken)
         {
-            PictureDataModel pictureDataModel = new PictureDataModel();
-
-            pictureDataModel.FileExtension = request.FileExtension;
-            pictureDataModel.FileName = request.FileName;
-            pictureDataModel.Path = _hostingEnvironment.WebRootPath +
-               pictureDataModel.Path +
-               pictureDataModel.FileName +
-               "." + pictureDataModel.FileExtension;
-
-            await saveThePictureToTheLocalStorage(request.FormFiles,pictureDataModel);
-
             PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(request.ClaimsPrincipal));
+
+            PictureDataModel pictureDataModel = new PictureDataModel();
+            pictureDataModel.Path =  $"/App_Data/Users_Data/{person.Id}/ProfilePicture/";
+
+            createTheFolderOrCheckIfItsExists(_hostingEnvironment.WebRootPath +  pictureDataModel.Path);
+
+            _currentStateDBContext.Pictures.Add(pictureDataModel);
+
+            pictureDataModel.FileName = pictureDataModel.Id+ "-" + request.FileName;
+            pictureDataModel.FileExtension = request.FileExtension;
+
+            await saveThePictureToTheLocalStorage(
+                request.FormFile,
+                _hostingEnvironment.WebRootPath + pictureDataModel.Path + pictureDataModel.FileName + "." + pictureDataModel.FileExtension);
+
 
             person.ProfilePicture = pictureDataModel;
 
@@ -46,11 +50,17 @@ namespace CM.Library.Events.Person
             return Unit.Value;
         }
 
-        private async Task saveThePictureToTheLocalStorage(IFormFileCollection FormFiles,PictureDataModel pictureDataModel)
+        private async Task createTheFolderOrCheckIfItsExists(string folderPath)
         {
-            var file = FormFiles[0];
+            Directory.CreateDirectory(folderPath);
+        }
 
-            using (Stream fs = new FileStream(pictureDataModel.Path
+        private async Task saveThePictureToTheLocalStorage(IFormFile formFile,string saveToPath)
+        {
+
+            IFormFile file = formFile;
+
+            using (Stream fs = new FileStream(saveToPath
                 , FileMode.OpenOrCreate, FileAccess.ReadWrite))
             {
                 file.CopyTo(fs);

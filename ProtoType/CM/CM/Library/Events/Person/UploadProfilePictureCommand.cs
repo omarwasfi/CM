@@ -7,7 +7,7 @@ namespace CM.Library.Events.Person
 {
 	public class UploadProfilePictureCommand : IRequest
 	{
-        public IFormFileCollection FormFiles { get; set; }
+        public IFormFile FormFile { get; set; }
 
         public string FileExtension { get; set; }
 
@@ -17,9 +17,9 @@ namespace CM.Library.Events.Person
 
 
 
-		public UploadProfilePictureCommand(IFormFileCollection formFiles, string fileName, string fileExtension , ClaimsPrincipal claimsPrincipal)
+		public UploadProfilePictureCommand(IFormFile formFile, string fileName, string fileExtension , ClaimsPrincipal claimsPrincipal)
 		{
-			this.FormFiles = formFiles;
+			this.FormFile = formFile;
 			this.FileName = fileName;
 			this.FileExtension = fileExtension;
 			this.ClaimsPrincipal = claimsPrincipal;

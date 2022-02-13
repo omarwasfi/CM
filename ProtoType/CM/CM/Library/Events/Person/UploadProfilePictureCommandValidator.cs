@@ -7,8 +7,8 @@ namespace CM.Library.Events.Person
 	{
 		public UploadProfilePictureCommandValidator()
 		{
-			RuleFor(x => x.FormFiles[0]).NotNull().WithMessage("The FormFiles[0] is null !");
-			RuleFor(x => x.FormFiles[0]).NotEmpty().WithMessage("The FormFiles[0] is Empty !");
+			RuleFor(x => x.FormFile).NotNull().WithMessage("The FormFile is null !");
+			RuleFor(x => x.FormFile).NotEmpty().WithMessage("The FormFile is Empty !");
 		}
 	}
 }
