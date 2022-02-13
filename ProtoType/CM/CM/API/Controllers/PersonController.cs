@@ -73,6 +73,18 @@ namespace CM.API.Controllers
             return Ok(base64DataViewModel);
 
         }
+
+        [HttpPost]
+        [Route("UpdateProfile")]
+        public async Task<ActionResult> UpdateProfile(PersonUpdateProfileRequestViewModel personUpdateProfileRequestViewModel)
+        {
+            await _mediator.Send(new UpdateProfileCommand(
+                this.User,personUpdateProfileRequestViewModel.FirstName,
+                personUpdateProfileRequestViewModel.LastName,
+                personUpdateProfileRequestViewModel.Gender));
+
+            return Ok();
+        }
     }
 }
 

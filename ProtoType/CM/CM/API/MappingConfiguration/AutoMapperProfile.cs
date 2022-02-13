@@ -9,7 +9,8 @@ namespace CM.API.MappingConfiguration
 	{
 		public AutoMapperProfile()
 		{
-			CreateMap<PersonDataModel, PersonDataViewModel>();
+			CreateMap<PersonDataModel, PersonDataViewModel>()
+				.ForMember(x=>x.ProfilePicture,opt=>opt.Ignore());
 		}
 	}
 }

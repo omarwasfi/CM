@@ -36,7 +36,7 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Title = "CM API",
         Description = "The server side api",
-        TermsOfService = new Uri("https://example.com/terms"),
+        TermsOfService = new Uri("https://omarwasfi.com"),
         Contact = new OpenApiContact
         {
             Name = "Omar Wasfi",
@@ -46,7 +46,7 @@ builder.Services.AddSwaggerGen(c =>
         License = new OpenApiLicense
         {
             Name = "Use under LICX",
-            Url = new Uri("https://example.com/license"),
+            Url = new Uri("https://omarwasfi.com"),
         }
     });
 
