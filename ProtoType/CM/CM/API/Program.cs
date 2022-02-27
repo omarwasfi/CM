@@ -148,13 +148,6 @@ builder.Services.AddAutoMapper(typeof(Program));
 var app = builder.Build();
 Log.Information("CM.API Started");
 
-// Configure the HTTP request pipeline.
-/*if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}*/
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -168,7 +161,52 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+try
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+
+        var currentStateDBContext = services.GetRequiredService<CurrentStateDBContext>();
+
+        currentStateDBContext.Database.Migrate();
+    }
+
+    Log.Information("CurrentState Database migrations applied.");
+
+
+}
+catch
+{
+    Log.Error("Couldn't connect to the CurrentState database server and apply the migrations !");
+
+}
+
+try
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+
+        var eventsDBContext = services.GetRequiredService<EventsDBContext>();
+
+        eventsDBContext.Database.Migrate();
+
+    }
+
+    Log.Information("Events Database migrations applied.");
+
+
+}
+catch
+{
+    Log.Error("Couldn't connect to the Events database server and apply the migrations !");
+
+}
+
+
 app.Run();
+
 /*
 try
 {

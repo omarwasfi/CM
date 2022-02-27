@@ -6,7 +6,10 @@ Update-database  -context EventsDBContext
 
 
 dotnet ef migrations add InitialCreate  --context EventsDBContext --output-dir Migrations/EventsDatabase
+dotnet ef migrations bundle --context EventsDBContext
 dotnet ef database update --context EventsDBContext
 
 dotnet ef migrations add InitialCreate  --context CurrentStateDBContext --output-dir Migrations/CurrentStateDatabase
+dotnet ef migrations bundle --context CurrentStateDBContext
+dotnet ef migrations bundle --self-contained -r linux-x64 --context CurrentStateDBContext
 dotnet ef database update --context CurrentStateDBContext

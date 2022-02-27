@@ -92,8 +92,10 @@ namespace CM.Library.Events.Token
 
             var token = new JwtSecurityToken
            (
-               issuer: "https://localhost:7093/",
-               audience: "https://localhost:7093/",
+               //issuer: "https://localhost:7093/",
+               //audience: "https://localhost:7093/",
+               issuer: "https://cm-eg.net/",
+               audience: "https://cm-eg.net/",
                claims: claims,
                expires: DateTime.UtcNow.AddDays(7),
                notBefore: DateTime.UtcNow,
