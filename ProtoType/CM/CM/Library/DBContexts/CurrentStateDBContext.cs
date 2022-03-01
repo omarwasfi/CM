@@ -1,5 +1,6 @@
 ﻿using CM.Library.DataModels;
 using CM.Library.DataModels.BusinessModels;
+using CM.Library.DataModels.Chat;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,9 @@ namespace CM.Library.DBContexts
         public DbSet<ProblemTypeDataModel> ProblemTypes { get; set; }
         public DbSet<PictureDataModel> Pictures { get; set; }
         public DbSet<OTPDataModel> OTPs { get; set; }
+        public DbSet<RoomDataModel> Rooms { get; set; }
+        public DbSet<MessageDataModel> Messages { get; set; }
+        public DbSet<MessageContentDataModel> MessageContents { get; set; }
 
         public CurrentStateDBContext(DbContextOptions<CurrentStateDBContext> options) : base(options)
         {

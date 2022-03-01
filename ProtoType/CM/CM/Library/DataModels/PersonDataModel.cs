@@ -1,4 +1,5 @@
 ﻿using CM.Library.DataModels.BusinessModels;
+using CM.Library.DataModels.Chat;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace CM.Library.DataModels
             this.OwnedCars = new HashSet<OwnedCarDataModel>();
             this.Problems = new HashSet<ProblemDataModel>();
             this.OTPs = new HashSet<OTPDataModel>();
+            this.Rooms = new HashSet<RoomDataModel>();
+            this.Messages = new HashSet<MessageDataModel>();
         }
         [Column(TypeName = "nvarchar(100)")]
         public string FirstName { get; set; }
@@ -30,12 +33,16 @@ namespace CM.Library.DataModels
 
 
         public virtual PictureDataModel ProfilePicture { get; set; }
-
-        public virtual ICollection<OwnedCarDataModel> OwnedCars { get; set; }
-        public virtual ICollection<ProblemDataModel> Problems { get; set; }
         public virtual ICollection<OTPDataModel> OTPs { get; set; }
 
 
+        public virtual ICollection<OwnedCarDataModel> OwnedCars { get; set; }
+        public virtual ICollection<ProblemDataModel> Problems { get; set; }
+
+        #region Chat
+        public virtual ICollection<RoomDataModel> Rooms { get; set; }
+        public virtual ICollection<MessageDataModel> Messages { get; set; }
+        #endregion
 
     }
 }
