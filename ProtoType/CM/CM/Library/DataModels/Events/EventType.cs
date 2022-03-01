@@ -14,6 +14,7 @@ namespace CM.Library.DataModels.Events
         RegisterPerson,
         LogoutPerson,
         GenerateToken,
+        UpdateProfile,
 
         #endregion
 

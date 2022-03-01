@@ -16,11 +16,17 @@ namespace CM.Library.Events.Person
 
         public string ConfirmPassword { get; set; }
 
-        public RegisterPersonCommand(string username , string password, string confirmPassword)
+        public string Issuer { get; set; }
+
+        public string Audience { get; set; }
+
+        public RegisterPersonCommand(string username , string password, string confirmPassword, string issuer, string audience)
         {
             this.UserName = username;
             this.Password = password;
             this.ConfirmPassword = confirmPassword;
+            this.Issuer = issuer;
+            this.Audience = audience;
         }
     }
 }

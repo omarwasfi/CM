@@ -94,8 +94,8 @@ namespace CM.Library.Events.Token
            (
                //issuer: "https://localhost:7093/",
                //audience: "https://localhost:7093/",
-               issuer: "https://cm-eg.net/",
-               audience: "https://cm-eg.net/",
+               issuer: request.Issuer,
+               audience: request.Audience,
                claims: claims,
                expires: DateTime.UtcNow.AddDays(7),
                notBefore: DateTime.UtcNow,

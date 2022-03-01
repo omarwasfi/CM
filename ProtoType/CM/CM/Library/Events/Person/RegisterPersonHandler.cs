@@ -39,7 +39,7 @@ namespace CM.Library.Events.Person
 
             await applyEventToTheCurrentState(request);
 
-            return await _mediator.Send(new CreateTokenByUserNameCommand(request.UserName));
+            return await _mediator.Send(new CreateTokenByUserNameCommand(request.UserName,request.Issuer,request.Audience));
         }
 
         private async Task applyEventToTheCurrentState(RegisterPersonCommand request)

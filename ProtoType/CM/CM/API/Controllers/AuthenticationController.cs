@@ -16,10 +16,12 @@ namespace CM.API.Controllers
     public class AuthenticationController : ControllerBase
     {
         private IMediator _mediator { get; set; }
+        private IConfiguration _configuration;
 
-        public AuthenticationController(IMediator mediator)
+        public AuthenticationController(IMediator mediator, IConfiguration configuration)
         {
             this._mediator = mediator;
+            this._configuration = configuration;
         }
 
 
@@ -29,7 +31,12 @@ namespace CM.API.Controllers
         {
             try
             {
-                return  Ok( await _mediator.Send(new LoginPersonCommand(username,password,rememberMe: false)));
+                return  Ok( await _mediator.Send(new LoginPersonCommand(
+                    username,password,
+                    rememberMe: false,
+                    issuer: _configuration.GetValue<string>("Jwt: Issuer"),
+                    audience: _configuration.GetValue<string>("Jwt:Audience")
+                    )));
             }
             catch (ValidationException v)
             {
@@ -49,7 +56,13 @@ namespace CM.API.Controllers
         {
             try
             {
-                return Ok( await _mediator.Send(new RegisterPersonCommand(username, password,confirmedPassword)));
+                return Ok( await _mediator.Send(new RegisterPersonCommand(
+                    username,
+                    password,
+                    confirmedPassword,
+                    issuer: _configuration.GetValue<string>("Jwt:Issuer"),
+                    audience: _configuration.GetValue<string>("Jwt:Audience")
+                    )));
 
             }
             catch (ValidationException v)

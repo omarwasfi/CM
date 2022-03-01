@@ -15,12 +15,16 @@ namespace CM.Library.Events.Person
         public string Usernamme { get; set; }
         public string Password { get; set; }
         public bool RememberMe { get; set; }
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
 
-        public LoginPersonCommand(string usernamme, string password, bool rememberMe)
+        public LoginPersonCommand(string usernamme, string password, bool rememberMe, string issuer, string audience)
         {
             Usernamme = usernamme;
             Password = password;
             RememberMe = rememberMe;
+            this.Issuer = issuer;
+            this.Audience = audience;
         }
     }
 }

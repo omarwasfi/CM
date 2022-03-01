@@ -81,7 +81,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
-
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 
 builder.Services.AddMediatR(typeof(CMLibraryMediatREntryPoint).Assembly);
 
