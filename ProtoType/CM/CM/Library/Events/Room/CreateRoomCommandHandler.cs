@@ -26,7 +26,13 @@ namespace CM.Library.Events.Room
             EventDataModel createRoomEvent = new EventDataModel();
             createRoomEvent.Type = EventType.CreateRoom;
             createRoomEvent.DateTime = DateTime.Now;
-            createRoomEvent.Content = JsonConvert.SerializeObject(request);
+
+            var settings = new JsonSerializerSettings
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            createRoomEvent.Content = JsonConvert.SerializeObject(request, settings);
 
             await _eventsDBContext.Events.AddAsync(createRoomEvent);
             await _eventsDBContext.SaveChangesAsync();
