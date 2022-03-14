@@ -18,6 +18,11 @@ namespace CM.Library.DataModels.Events
 
         #endregion
 
+        #region Room
+        CreateRoom,
+
+        #endregion
+
         #region CarBrand
         AddCarBrand,
         #endregion

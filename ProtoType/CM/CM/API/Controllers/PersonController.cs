@@ -42,10 +42,7 @@ namespace CM.API.Controllers
 
             personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
 
-            personDataViewModel.ProfilePicture = new PicureBase64DataViewModel()
-            {
-                Base64 = await _mediator.Send(new GetPictureAsBase64Query(person.ProfilePicture))
-            };
+           
 
             return Ok(personDataViewModel) ;
         }
@@ -58,14 +55,14 @@ namespace CM.API.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("UploadProfilePicture")]
-        public async Task<ActionResult<PicureBase64DataViewModel>> UploadProfilePicture(IFormFile file, string fileName, string fileExtension)
+        public async Task<ActionResult<PersonDataViewModel>> UploadProfilePicture(IFormFile file, string fileName, string fileExtension)
         {
 
             await _mediator.Send(new UploadProfilePictureCommand(file, fileName, fileExtension, this.User));
 
             PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
 
-            PicureBase64DataViewModel base64DataViewModel =  new PicureBase64DataViewModel()
+            PictureBase64DataViewModel base64DataViewModel =  new PictureBase64DataViewModel()
             {
                 Base64 = await _mediator.Send(new GetPictureAsBase64Query(person.ProfilePicture))
             };

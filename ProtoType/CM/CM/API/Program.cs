@@ -1,6 +1,8 @@
 ﻿using System.Configuration;
 using System.Reflection;
 using System.Text;
+using AutoMapper;
+using CM.API.MappingConfiguration;
 using CM.Library;
 using CM.Library.DataModels;
 using CM.Library.DBContexts;
@@ -11,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Serilog;
 
 
@@ -25,7 +28,12 @@ builder.Host.UseSerilog((ctx, lc) => lc
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+    options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver();
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -141,6 +149,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
+builder.Services.AddTransient<ProfilePictureToBase64Resolver>();
+
 
 
 
@@ -207,46 +217,3 @@ catch
 
 app.Run();
 
-/*
-try
-{
-
-    var app = builder.Build();
-    Log.Information("CM.API Started");
-
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
-
-    app.UseSwagger();
-    app.UseSwaggerUI();
-
-    app.UseSerilogRequestLogging();
-
-
-    app.UseHttpsRedirection();
-
-    app.UseAuthorization();
-    app.UseAuthorization();
-
-    app.MapControllers();
-
-    app.Run();
-
-
-
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Unhandled exception");
-}
-finally
-{
-    Log.Information("Shut down complete");
-    Log.CloseAndFlush();
-}
-
-*/

@@ -27,6 +27,7 @@
     <Folder Include="Queries\Picture\" />
     <Folder Include="Events\Picture\" />
     <Folder Include="DataModels\Chat\" />
+    <Folder Include="Events\Room\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,5 +40,6 @@
     <None Remove="Queries\Picture\" />
     <None Remove="Events\Picture\" />
     <None Remove="DataModels\Chat\" />
+    <None Remove="Events\Room\" />
   </ItemGroup>
 </Project>
