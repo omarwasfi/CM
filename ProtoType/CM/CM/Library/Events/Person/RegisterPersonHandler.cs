@@ -32,7 +32,16 @@ namespace CM.Library.Events.Person
             
             registerPersonEvent.Type = EventType.RegisterPerson;
             registerPersonEvent.DateTime = DateTime.Now;
-            registerPersonEvent.Content = JsonConvert.SerializeObject(request);
+
+            RegisterPersonCommand tempRegisterPersonCommand = request;
+            tempRegisterPersonCommand.Password = "Not Saved Here";
+
+            var settings = new JsonSerializerSettings
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            registerPersonEvent.Content = JsonConvert.SerializeObject(tempRegisterPersonCommand, settings);
 
             await _eventsDBContext.Events.AddAsync(registerPersonEvent);
             await _eventsDBContext.SaveChangesAsync();

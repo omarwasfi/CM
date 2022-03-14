@@ -26,7 +26,7 @@ namespace CM.Library.Events.Room
             EventDataModel createRoomEvent = new EventDataModel();
             createRoomEvent.Type = EventType.CreateRoom;
             createRoomEvent.DateTime = DateTime.Now;
-
+            
             var settings = new JsonSerializerSettings
             {
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects,

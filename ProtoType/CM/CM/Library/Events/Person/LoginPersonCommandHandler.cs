@@ -36,7 +36,16 @@ namespace CM.Library.Events.Person
 
             loginPersonEvent.Type = EventType.LoginPerson;
             loginPersonEvent.DateTime = DateTime.Now;
-            loginPersonEvent.Content = JsonConvert.SerializeObject(request);
+
+            LoginPersonCommand tempLoginPersonCommand = request;
+            tempLoginPersonCommand.Password = "Not Saved Here";
+
+            var settings = new JsonSerializerSettings
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
+            loginPersonEvent.Content = JsonConvert.SerializeObject(tempLoginPersonCommand, settings);
 
             await _eventsDBContext.Events.AddAsync(loginPersonEvent);
             await _eventsDBContext.SaveChangesAsync();
