@@ -34,7 +34,7 @@ namespace CM.API.Controllers
                 return  Ok( await _mediator.Send(new LoginPersonCommand(
                     username,password,
                     rememberMe: false,
-                    issuer: _configuration.GetValue<string>("Jwt: Issuer"),
+                    issuer: _configuration.GetValue<string>("Jwt:Issuer"),
                     audience: _configuration.GetValue<string>("Jwt:Audience")
                     )));
             }

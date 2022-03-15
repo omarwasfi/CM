@@ -15,7 +15,6 @@ namespace CM.API.MappingConfiguration
 		{
 
 			CreateMap<PersonDataModel, PersonDataViewModel>()
-				//.ForMember(p => p.ProfilePicture, opt => opt.Ignore());
 				.ForMember(p => p.ProfilePicture, opt => opt.MapFrom<ProfilePictureToBase64Resolver>());
 			CreateMap<RoomDataModel, RoomDataViewModel>();
 		}
