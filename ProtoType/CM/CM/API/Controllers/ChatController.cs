@@ -6,6 +6,7 @@ using CM.Library.DataModels.Chat;
 using CM.Library.Events.Room;
 using CM.Library.Queries.Person;
 using CM.Library.Queries.Picture;
+using CM.Library.Queries.Room;
 using CM.SharedWithClient;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -50,6 +51,18 @@ namespace CM.API.Controllers
 			return Ok(roomDataViewModel);
 
 		}
+
+		[HttpPost]
+		[Route("GetPrivateRoomsByPersonId")]
+		public async Task<ActionResult<List<RoomDataViewModel>>> GetPrivateRoomsByPersonId(string personId)
+        {
+			List<RoomDataModel> privateRoomsDataModels = new List<RoomDataModel>();
+			privateRoomsDataModels = await _mediator.Send(new GetPrivateRoomsByPersonIdQuery(personId));
+
+			List<RoomDataViewModel> roomDataViewModels = _mapper.Map<List<RoomDataViewModel>>(privateRoomsDataModels);
+
+			return roomDataViewModels;
+        }
 
 
 
