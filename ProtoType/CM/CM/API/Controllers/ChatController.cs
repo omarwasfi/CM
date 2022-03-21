@@ -52,7 +52,7 @@ namespace CM.API.Controllers
 
 		}
 
-		[HttpPost]
+		[HttpGet]
 		[Route("GetPrivateRoomsByPersonId")]
 		public async Task<ActionResult<List<RoomDataViewModel>>> GetPrivateRoomsByPersonId(string personId)
         {
@@ -64,7 +64,17 @@ namespace CM.API.Controllers
 			return roomDataViewModels;
         }
 
+		[HttpGet]
+		[Route("GetGroupRoomsByPersonId")]
+		public async Task<ActionResult<List<RoomDataViewModel>>> GetGroupRoomsByPersonId(string personId)
+		{
+			List<RoomDataModel> groupRoomsDataModels = new List<RoomDataModel>();
+			groupRoomsDataModels = await _mediator.Send(new GetGroupRoomsByPersonIdQuery(personId));
 
+			List<RoomDataViewModel> roomDataViewModels = _mapper.Map<List<RoomDataViewModel>>(groupRoomsDataModels);
+
+			return roomDataViewModels;
+		}
 
 	}
 
