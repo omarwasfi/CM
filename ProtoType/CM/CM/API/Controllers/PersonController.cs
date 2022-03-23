@@ -6,6 +6,7 @@ using CM.Library.Events.Person;
 using CM.Library.Queries.Person;
 using CM.Library.Queries.Picture;
 using CM.SharedWithClient;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -36,15 +37,30 @@ namespace CM.API.Controllers
         [Route("GetPerson")]
         public async Task<ActionResult<PersonDataViewModel>> GetPerson()
         {
-            PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
 
-            PersonDataViewModel personDataViewModel = new PersonDataViewModel();
 
-            personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
+            try
+            {
+                PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
+
+                PersonDataViewModel personDataViewModel = new PersonDataViewModel();
+
+                personDataViewModel = _mapper.Map<PersonDataViewModel>(person);
 
            
 
-            return Ok(personDataViewModel) ;
+                return Ok(personDataViewModel) ;
+            }
+
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
         }
 
         /// <summary>
@@ -53,34 +69,61 @@ namespace CM.API.Controllers
         /// <param name="fileName"></param>
         /// <param name="fileExtension"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPut]
         [Route("UploadProfilePicture")]
         public async Task<ActionResult<PersonDataViewModel>> UploadProfilePicture(IFormFile file, string fileName, string fileExtension)
         {
 
-            await _mediator.Send(new UploadProfilePictureCommand(file, fileName, fileExtension, this.User));
+           
 
-            PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
-
-            PictureBase64DataViewModel base64DataViewModel =  new PictureBase64DataViewModel()
+            try
             {
-                Base64 = await _mediator.Send(new GetPictureAsBase64Query(person.ProfilePicture))
-            };
+                 await _mediator.Send(new UploadProfilePictureCommand(file, fileName, fileExtension, this.User));
 
-            return Ok(base64DataViewModel);
+                            PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
+
+                            PictureBase64DataViewModel base64DataViewModel =  new PictureBase64DataViewModel()
+                            {
+                                Base64 = await _mediator.Send(new GetPictureAsBase64Query(person.ProfilePicture))
+                            };
+
+                return Ok(base64DataViewModel);
+            }
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
 
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("UpdateProfile")]
         public async Task<ActionResult> UpdateProfile(PersonUpdateProfileRequestViewModel personUpdateProfileRequestViewModel)
         {
-            await _mediator.Send(new UpdateProfileCommand(
-                this.User,personUpdateProfileRequestViewModel.FirstName,
-                personUpdateProfileRequestViewModel.LastName,
-                personUpdateProfileRequestViewModel.Gender));
+            
+            try
+            {
+                await _mediator.Send(new UpdateProfileCommand(
+                                this.User,personUpdateProfileRequestViewModel.FirstName,
+                                personUpdateProfileRequestViewModel.LastName,
+                                personUpdateProfileRequestViewModel.Gender));
 
-            return Ok();
+                return Ok();
+            }
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
         }
     }
 }

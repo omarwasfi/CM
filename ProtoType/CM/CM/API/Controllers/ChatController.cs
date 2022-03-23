@@ -3,11 +3,13 @@ using System.Net;
 using AutoMapper;
 using CM.Library.DataModels;
 using CM.Library.DataModels.Chat;
+using CM.Library.Events.Chat;
 using CM.Library.Events.Room;
 using CM.Library.Queries.Person;
 using CM.Library.Queries.Picture;
 using CM.Library.Queries.Room;
 using CM.SharedWithClient;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -31,24 +33,28 @@ namespace CM.API.Controllers
 			this._mapper = mapper;
 		}
 
+
 		[HttpPost]
-		[Route("CreateRoom")]
-		public async Task<ActionResult<RoomDataViewModel>> CreateRoom(List<string> peopleId)
+		[Route("StartPrivateChat")]
+		public async Task<ActionResult<RoomDataViewModel>> StartPrivateChat(string firstPersonId , string secondPersonId)
 		{
-			List<PersonDataModel> personDataModels = new List<PersonDataModel>();
-
-			foreach(string personId in peopleId)
+            try
             {
-				personDataModels.Add( await _mediator.Send(new GetPersonByIdQuery(personId)) );
-            }
+				RoomDataModel roomDataModel = await _mediator.Send(new StartPrivateChatCommand(firstPersonId, secondPersonId, this.User));
 
-			RoomDataModel  roomDataModel = await _mediator.Send(new CreateRoomCommand(personDataModels));
+				RoomDataViewModel roomDataViewModel = _mapper.Map<RoomDataViewModel>(roomDataModel);
 
-			RoomDataViewModel roomDataViewModel = _mapper.Map<RoomDataViewModel>(roomDataModel);
+				return Ok(roomDataViewModel);
+			}
+			catch (ValidationException v)
+			{
+				return ValidationProblem(v.Message);
+			}
+			catch
+			{
+				return BadRequest("Unrecognized error");
 
-			
-
-			return Ok(roomDataViewModel);
+			}
 
 		}
 
@@ -56,24 +62,50 @@ namespace CM.API.Controllers
 		[Route("GetPrivateRoomsByPersonId")]
 		public async Task<ActionResult<List<RoomDataViewModel>>> GetPrivateRoomsByPersonId(string personId)
         {
-			List<RoomDataModel> privateRoomsDataModels = new List<RoomDataModel>();
-			privateRoomsDataModels = await _mediator.Send(new GetPrivateRoomsByPersonIdQuery(personId));
+			try
+			{
+				List<RoomDataModel> privateRoomsDataModels = new List<RoomDataModel>();
+				privateRoomsDataModels = await _mediator.Send(new GetPrivateRoomsByPersonIdQuery(personId));
 
-			List<RoomDataViewModel> roomDataViewModels = _mapper.Map<List<RoomDataViewModel>>(privateRoomsDataModels);
+				List<RoomDataViewModel> roomDataViewModels = _mapper.Map<List<RoomDataViewModel>>(privateRoomsDataModels);
 
-			return roomDataViewModels;
-        }
+				return roomDataViewModels;
+			}
+			catch (ValidationException v)
+			{
+				return ValidationProblem(v.Message);
+			}
+			catch
+			{
+				return BadRequest("Unrecognized error");
+
+			}
+		}
 
 		[HttpGet]
 		[Route("GetGroupRoomsByPersonId")]
 		public async Task<ActionResult<List<RoomDataViewModel>>> GetGroupRoomsByPersonId(string personId)
 		{
-			List<RoomDataModel> groupRoomsDataModels = new List<RoomDataModel>();
-			groupRoomsDataModels = await _mediator.Send(new GetGroupRoomsByPersonIdQuery(personId));
+            try
+            {
+				List<RoomDataModel> groupRoomsDataModels = new List<RoomDataModel>();
+				groupRoomsDataModels = await _mediator.Send(new GetGroupRoomsByPersonIdQuery(personId));
 
-			List<RoomDataViewModel> roomDataViewModels = _mapper.Map<List<RoomDataViewModel>>(groupRoomsDataModels);
+				List<RoomDataViewModel> roomDataViewModels = _mapper.Map<List<RoomDataViewModel>>(groupRoomsDataModels);
 
-			return roomDataViewModels;
+				return roomDataViewModels;
+			}
+			catch (ValidationException v)
+			{
+				return ValidationProblem(v.Message);
+			}
+			catch
+			{
+				return BadRequest("Unrecognized error");
+
+			}
+
+			
 		}
 
 	}
