@@ -1,5 +1,5 @@
 ﻿using System;
-namespace CM.SharedWithClient
+namespace CM.SharedWithClient.RequestViewModels
 {
 	public class PersonUpdateProfileRequestViewModel
 	{

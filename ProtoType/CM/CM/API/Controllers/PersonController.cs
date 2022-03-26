@@ -6,6 +6,7 @@ using CM.Library.Events.Person;
 using CM.Library.Queries.Person;
 using CM.Library.Queries.Picture;
 using CM.SharedWithClient;
+using CM.SharedWithClient.RequestViewModels;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

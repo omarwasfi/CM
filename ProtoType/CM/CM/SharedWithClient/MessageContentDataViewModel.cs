@@ -7,9 +7,8 @@ namespace CM.SharedWithClient
 
         public string? Text { get; set; }
 
-        PictureBase64DataViewModel? Picture { get; set; }
+        PictureBase64DataViewModel? PictureBase64 { get; set; }
 
-        public string? InitId { get; set; }
     }
 }
 

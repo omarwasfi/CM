@@ -9,11 +9,13 @@ using CM.Library.Queries.Person;
 using CM.Library.Queries.Picture;
 using CM.Library.Queries.Room;
 using CM.SharedWithClient;
+using CM.SharedWithClient.RequestViewModels;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace CM.API.Controllers
 {
@@ -26,11 +28,15 @@ namespace CM.API.Controllers
 		private IMediator _mediator { get; set; }
 		private readonly IMapper _mapper;
 
+		private readonly IHubContext<ChatHub> _hub;
 
-		public ChatController(IMediator mediator, IMapper mapper)
+
+
+		public ChatController(IMediator mediator, IMapper mapper, IHubContext<ChatHub> hub)
 		{
 			this._mediator = mediator;
 			this._mapper = mapper;
+			this._hub = hub;
 		}
 
 
@@ -107,6 +113,34 @@ namespace CM.API.Controllers
 
 			
 		}
+
+
+		[HttpPost]
+		[Route("SubmitMessage")]
+		public async Task<ActionResult> SubmitMessage(string message)
+		{
+			try
+			{
+				//var user = this.User;
+
+				await _hub.Clients.All.SendAsync("ReceiveMessage", message);
+
+
+				return Ok();
+			}
+			catch (ValidationException v)
+			{
+				return ValidationProblem(v.Message);
+			}
+			catch
+			{
+				return BadRequest("Unrecognized error");
+
+			}
+
+		}
+
+
 
 	}
 

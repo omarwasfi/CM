@@ -73,7 +73,6 @@ namespace CM.API.Controllers
                 return BadRequest("Unrecognized error ");
 
             }
-            return Ok();
         }
 
 

@@ -1,7 +1,6 @@
-﻿using System.Configuration;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text;
-using AutoMapper;
+using CM.API.Controllers;
 using CM.API.MappingConfiguration;
 using CM.Library;
 using CM.Library.DataModels;
@@ -15,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Serilog;
+
 
 
 
@@ -146,6 +146,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 builder.Services.AddAuthorization();
 
+builder.Services.AddSignalR();
+
+
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -168,6 +171,9 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.UseAuthorization();
+
+
+app.MapHub<ChatHub>("/chatHub");
 
 app.MapControllers();
 

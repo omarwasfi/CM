@@ -35,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\CM.Client.csproj" />
     <ProjectReference Include="..\Shared\CM.Shared.csproj" />
     <ProjectReference Include="..\Library\CM.Library.csproj" />
 

@@ -7,8 +7,13 @@ namespace CM.SharedWithClient
 
 		public DateTime? DateTime { get; set; }
 
-		public MessageContentDataViewModel? MessageContent { get; set; }
+        public PersonDataViewModel? From { get; set; }
 
+        public RoomDataViewModel? Room { get; set; }
+
+        public MessageContentDataViewModel? MessageContent { get; set; }
+
+		public string? InitId { get; set; }
 
 	}
 }
