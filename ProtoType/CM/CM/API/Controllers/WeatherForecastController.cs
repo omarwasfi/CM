@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using CM.SharedWithClient;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,17 +22,19 @@ public class WeatherForecastController : ControllerBase
         _logger = logger;
     }
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<WeatherForecast> Get()
+    public ActionResult<List<WeatherForecast>> Get()
     {
-        return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+
+        List<WeatherForecast> forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateTime.Now.AddDays(index),
             TemperatureC = Random.Shared.Next(-20, 55),
             Summary = Summaries[Random.Shared.Next(Summaries.Length)]
         })
-        .ToArray();
+        .ToList();
+
+        return Ok(forecasts);
     }
 }
 

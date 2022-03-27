@@ -1,4 +1,4 @@
-﻿namespace CM.API;
+﻿namespace CM.SharedWithClient;
 
 public class WeatherForecast
 {

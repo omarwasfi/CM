@@ -8,14 +8,9 @@
 
   <ItemGroup>
     <None Remove="RequestViewModels\" />
-    <None Remove="Services\" />
-    <None Remove="Services\Interfaces\" />
-    <None Remove="Services\Classes\" />
+    <None Remove="Microsoft.JSInterop" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="RequestViewModels\" />
-    <Folder Include="Services\" />
-    <Folder Include="Services\Interfaces\" />
-    <Folder Include="Services\Classes\" />
   </ItemGroup>
 </Project>

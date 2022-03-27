@@ -20,6 +20,17 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+                      builder =>
+                      {
+                          builder.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+
+                      });
+});
 
 //serilog Logger
 builder.Host.UseSerilog((ctx, lc) => lc
@@ -169,8 +180,12 @@ app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
+app.UseCors();
+
+
 app.UseAuthorization();
 app.UseAuthorization();
+
 
 
 app.MapHub<ChatHub>("/chatHub");
