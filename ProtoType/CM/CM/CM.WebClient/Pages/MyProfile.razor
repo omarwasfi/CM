@@ -1,0 +1,20 @@
+﻿@page "/MyProfile"
+@inject IPersonService PersonService
+
+
+
+<h3>@person.UserName</h3>
+
+<p>@person.FirstName</p>
+<p>@person.LastName</p>
+
+@code {
+    private PersonDataViewModel person = new PersonDataViewModel();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        person = await PersonService.GetTheAuthorizedPerson();
+
+    }
+}
+

@@ -1,11 +1,14 @@
 ﻿using System;
+using CM.SharedWithClient;
+using CM.SharedWithClient.RequestViewModels;
+
 namespace CM.WebClient.Services.Interfaces
 {
 	public interface IAuthenticationService
 	{
-		string Token { get; }
+		TokenDataViewModel Token { get; }
 		Task Initialize();
-		Task Login(string username, string password);
+		Task Login(LoginWithUsernameRequestDataViewModel loginWithUsernameRequest);
 		Task Logout();
 	}
 }

@@ -13,6 +13,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https:/
 builder.Services
                .AddScoped<IAuthenticationService, AuthenticationService>()
                .AddScoped<IHttpService, HttpService>()
+               .AddScoped<IPersonService,PersonService>()
                .AddScoped<ILocalStorageService, LocalStorageService>();
 
 

@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using CM.SharedWithClient;
 using CM.WebClient.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 
@@ -45,10 +46,10 @@ namespace CM.WebClient.Services.Classes
         private async Task<T> sendRequest<T>(HttpRequestMessage request)
         {
             // add jwt auth header if user is logged in and request is to the api url
-            var token = await _localStorageService.GetItem<string>("token");
+            var token = await _localStorageService.GetItem<TokenDataViewModel>("token");
             var isApiUrl = !request.RequestUri.IsAbsoluteUri;
             if (token != null && isApiUrl)
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token.Token);
 
             var response = await _httpClient.SendAsync(request);
 
@@ -65,8 +66,8 @@ namespace CM.WebClient.Services.Classes
                 var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
                 throw new Exception(error["message"]);
             }
-
-            return await response.Content.ReadFromJsonAsync<T>();
+            var result = await response.Content.ReadFromJsonAsync<T>();
+            return result;
         }
     }
 }

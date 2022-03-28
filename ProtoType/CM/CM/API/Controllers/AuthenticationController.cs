@@ -6,8 +6,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
 using CM.Library.Events.Person;
-
-
+using CM.SharedWithClient.RequestViewModels;
+using CM.SharedWithClient;
 
 namespace CM.API.Controllers
 {
@@ -27,16 +27,18 @@ namespace CM.API.Controllers
 
         [HttpPost]
         [Route("LoginWithUsername")]
-        public async Task<IActionResult> LoginWithUsername(string username, string password)
+        public async Task<ActionResult<TokenDataViewModel>> LoginWithUsername(LoginWithUsernameRequestDataViewModel loginWithUsernameRequest)
         {
             try
             {
-                return  Ok( await _mediator.Send(new LoginPersonCommand(
-                    username,password,
+                TokenDataViewModel tokenDataViewModel = new TokenDataViewModel();
+                tokenDataViewModel.Token = await _mediator.Send(new LoginPersonCommand(
+                    loginWithUsernameRequest.Username, loginWithUsernameRequest.Password,
                     rememberMe: false,
                     issuer: _configuration.GetValue<string>("Jwt:Issuer"),
                     audience: _configuration.GetValue<string>("Jwt:Audience")
-                    )));
+                    ));
+                return  Ok(tokenDataViewModel);
             }
             catch (ValidationException v)
             {

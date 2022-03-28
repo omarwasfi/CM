@@ -25,6 +25,7 @@
     <None Remove="Services\" />
     <None Remove="Services\Classes\" />
     <None Remove="Services\Interfaces\" />
+    <None Remove="Microsoft.AspNetCore.Mvc" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />

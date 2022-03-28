@@ -6,13 +6,23 @@ namespace CM.WebClient.Services.Classes
 {
 	public class PersonService : IPersonService
 	{
-		public PersonService()
+        private IHttpService _httpService;
+
+        public PersonService(IHttpService httpService)
 		{
+            this._httpService = httpService;
 		}
 
         public Task<PersonDataViewModel> GetPerson(string personId)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<PersonDataViewModel> GetTheAuthorizedPerson()
+        {
+            PersonDataViewModel person = await _httpService.Get<PersonDataViewModel>("Person/GetTheAuthorizedPerson");
+
+            return person;
         }
     }
 }

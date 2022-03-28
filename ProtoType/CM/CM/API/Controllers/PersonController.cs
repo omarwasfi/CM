@@ -35,8 +35,8 @@ namespace CM.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Route("GetPerson")]
-        public async Task<ActionResult<PersonDataViewModel>> GetPerson()
+        [Route("GetTheAuthorizedPerson")]
+        public async Task<ActionResult<PersonDataViewModel>> GetTheAuthorizedPerson()
         {
 
 

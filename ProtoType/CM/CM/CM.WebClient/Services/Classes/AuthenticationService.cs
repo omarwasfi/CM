@@ -1,4 +1,6 @@
 ﻿using System;
+using CM.SharedWithClient;
+using CM.SharedWithClient.RequestViewModels;
 using CM.WebClient.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 
@@ -9,7 +11,7 @@ namespace CM.WebClient.Services.Classes
         private IHttpService _httpService;
         private NavigationManager _navigationManager;
         private ILocalStorageService _localStorageService;
-        public string Token { get; private set; }
+        public TokenDataViewModel Token { get; private set; }
 
 
         public AuthenticationService(
@@ -25,18 +27,18 @@ namespace CM.WebClient.Services.Classes
 
         public async Task Initialize()
         {
-            Token = await _localStorageService.GetItem<string>("token");
+            Token = await _localStorageService.GetItem<TokenDataViewModel>("token");
         }
 
-        public async Task Login(string username, string password)
+        public async Task Login(LoginWithUsernameRequestDataViewModel loginWithUsernameRequest)
         {
-            Token = await _httpService.Post<string>("/users/authenticate", new { username, password });
+            Token = await _httpService.Post<TokenDataViewModel>("Authentication/LoginWithUsername", loginWithUsernameRequest);
             await _localStorageService.SetItem("token", Token);
         }
 
         public async Task Logout()
         {
-            Token = "";
+            Token = null;
             await _localStorageService.RemoveItem("token");
             _navigationManager.NavigateTo("login");
         }
