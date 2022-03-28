@@ -1,4 +1,5 @@
 # CM
+CM API is hosted on https://cm-eg.net/swagger/index.html
 System architecture
 ![DataFlowDiagram-system architecture drawio](https://user-images.githubusercontent.com/31694021/160465458-7c25c1d7-e01b-4598-94d7-b303aa9e7120.png)
 # Main Features:
