@@ -33,8 +33,6 @@ namespace CM.Library.Events.Person
                 new SavePictureCommand
                 (
                     formFile: request.FormFile,
-                    fileName: request.FileName,
-                    fileExtension: request.FileExtension,
                     personId: person.Id,
                     subFolderName: "ProfilePicture"
                     )

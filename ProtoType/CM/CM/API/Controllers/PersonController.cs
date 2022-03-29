@@ -72,14 +72,14 @@ namespace CM.API.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("UploadProfilePicture")]
-        public async Task<ActionResult<PersonDataViewModel>> UploadProfilePicture(IFormFile file, string fileName, string fileExtension)
+        public async Task<ActionResult<PictureBase64DataViewModel>> UploadProfilePicture( IFormFile file)
         {
 
            
 
             try
             {
-                 await _mediator.Send(new UploadProfilePictureCommand(file, fileName, fileExtension, this.User));
+                 await _mediator.Send(new UploadProfilePictureCommand(file, this.User));
 
                             PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
 

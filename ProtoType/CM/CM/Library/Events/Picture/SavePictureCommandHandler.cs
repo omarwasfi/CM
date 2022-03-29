@@ -30,8 +30,9 @@ namespace CM.Library.Events.Picture
 
             _currentStateDBContext.Pictures.Add(pictureDataModel);
 
-            pictureDataModel.FileName = pictureDataModel.Id + "-" + request.FileName;
-            pictureDataModel.FileExtension = request.FileExtension;
+
+            pictureDataModel.FileName = pictureDataModel.Id + "-" + request.FormFile.FileName.Substring(0, request.FormFile.FileName.IndexOf(".")); ;
+            pictureDataModel.FileExtension = request.FormFile.FileName.Substring(request.FormFile.FileName.IndexOf(".") + 1);
 
             await saveThePictureToTheLocalStorage(
                 request.FormFile,
