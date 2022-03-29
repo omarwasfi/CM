@@ -11,7 +11,7 @@ namespace CM.WebClient.Services.Classes
         private IHttpService _httpService;
         private NavigationManager _navigationManager;
         private ILocalStorageService _localStorageService;
-        public TokenDataViewModel Token { get; private set; }
+        public TokenDataViewModel? Token { get; private set; }
 
 
         public AuthenticationService(

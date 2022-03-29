@@ -6,7 +6,7 @@ namespace CM.WebClient.Services.Interfaces
 {
 	public interface IAuthenticationService
 	{
-		TokenDataViewModel Token { get; }
+		TokenDataViewModel? Token { get; }
 		Task Initialize();
 		Task Login(LoginWithUsernameRequestDataViewModel loginWithUsernameRequest);
 		Task Logout();
