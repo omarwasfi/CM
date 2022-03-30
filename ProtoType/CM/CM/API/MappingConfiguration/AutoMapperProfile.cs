@@ -14,8 +14,10 @@ namespace CM.API.MappingConfiguration
 		public AutoMapperProfile()
 		{
 
-			CreateMap<PersonDataModel, PersonDataViewModel>()
-				.ForMember(p => p.ProfilePicture, opt => opt.MapFrom<ProfilePictureToBase64Resolver>());
+			CreateMap<PersonDataModel, PersonDataViewModel>();
+			CreateMap<PictureDataModel, PictureBase64DataViewModel>()
+				.ForMember(p => p.Base64 ,opt => opt.MapFrom<PictureToBase64Resolver>());
+
 			CreateMap<RoomDataModel, RoomDataViewModel>();
 		}
 

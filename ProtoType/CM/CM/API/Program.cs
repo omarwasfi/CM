@@ -163,7 +163,8 @@ builder.Services.AddSignalR();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddTransient<ProfilePictureToBase64Resolver>();
+builder.Services.AddTransient<PictureToBase64Resolver>();
+
 
 
 

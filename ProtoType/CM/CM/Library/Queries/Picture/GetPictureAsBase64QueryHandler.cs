@@ -18,8 +18,9 @@ namespace CM.Library.Queries.Picture
 
         public async Task<string> Handle( GetPictureAsBase64Query request, CancellationToken cancellationToken)
         {
-            if (request.Picture != null)
+            try
             {
+                
                 byte[] fileBytes = await convertLocalFileToArrOfByte(
                _hostingEnvironment.WebRootPath +
                request.Picture.Path +
@@ -32,7 +33,7 @@ namespace CM.Library.Queries.Picture
                         + "base64, "
                         + Convert.ToBase64String(fileBytes);
             }
-            else
+            catch
             {
                 byte[] fileBytes = await convertLocalFileToArrOfByte(
               _hostingEnvironment.WebRootPath +

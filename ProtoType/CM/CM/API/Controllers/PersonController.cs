@@ -81,12 +81,9 @@ namespace CM.API.Controllers
             {
                  await _mediator.Send(new UploadProfilePictureCommand(file, this.User));
 
-                            PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
+                PersonDataModel person = await _mediator.Send(new GetTheAuthorizedPersonQuery(this.User));
 
-                            PictureBase64DataViewModel base64DataViewModel =  new PictureBase64DataViewModel()
-                            {
-                                Base64 = await _mediator.Send(new GetPictureAsBase64Query(person.ProfilePicture))
-                            };
+                PictureBase64DataViewModel base64DataViewModel = _mapper.Map<PictureBase64DataViewModel>(person.ProfilePicture);
 
                 return Ok(base64DataViewModel);
             }
