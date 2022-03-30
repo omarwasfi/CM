@@ -1,6 +1,7 @@
 ﻿using System;
 using CM.SharedWithClient;
 using CM.WebClient.Services.Interfaces;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace CM.WebClient.Services.Classes
 {
@@ -23,6 +24,11 @@ namespace CM.WebClient.Services.Classes
             PersonDataViewModel person = await _httpService.Get<PersonDataViewModel>("Person/GetTheAuthorizedPerson");
 
             return person;
+        }
+
+        public async Task<PictureBase64DataViewModel> UpdateProfilePicture(IBrowserFile browserFile)
+        {
+            return await _httpService.PutBrowseFile<PictureBase64DataViewModel>("Person/UploadProfilePicture", browserFile);
         }
     }
 }

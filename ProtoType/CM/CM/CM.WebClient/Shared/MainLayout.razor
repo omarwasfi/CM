@@ -1,5 +1,11 @@
 ﻿@inherits LayoutComponentBase
 @inject IAuthenticationService AuthenticationService
+@inject NavigationManager NavigationManager
+@inject ISnackbar _snackBar
+@inject IConfiguration Configuration
+
+
+
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -32,7 +38,9 @@
         <NavMenu />
     </MudDrawer>
     <MudMainContent>
-        @Body
+        <CascadingValue Value="hubConnection">
+            @Body
+        </CascadingValue>
     </MudMainContent>
 </MudLayout>
 
@@ -45,5 +53,49 @@
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
+    }
+
+
+
+    private HubConnection hubConnection;
+    public bool IsConnected => hubConnection.State == HubConnectionState.Connected;
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            hubConnection = new HubConnectionBuilder().WithUrl(Configuration.GetSection("ApiUrl").Value + "chathub").Build();
+            await hubConnection.StartAsync();
+            hubConnection.On<string, string>("ReceiveChatNotification", (message, roomId) =>
+            {
+
+                _snackBar.Add(message, Severity.Info, config =>
+                {
+                    config.VisibleStateDuration = 10000;
+                    config.HideTransitionDuration = 500;
+                    config.ShowTransitionDuration = 500;
+                    config.Action = "Chat?";
+                    config.ActionColor = Color.Info;
+                    config.Onclick = snackbar =>
+                    {
+                        NavigationManager.NavigateTo($"chat/{roomId}");
+                        return Task.CompletedTask;
+                    };
+                });
+
+            });
+        }
+        catch
+        {
+            _snackBar.Add("Couldn't connect to the signalR hib", Severity.Error, config =>
+            {
+                config.VisibleStateDuration = 10000;
+                config.HideTransitionDuration = 500;
+                config.ShowTransitionDuration = 500;
+
+
+            });
+        }
+
+
     }
 }

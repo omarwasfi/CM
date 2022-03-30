@@ -1,6 +1,5 @@
 ﻿@page "/MyProfile"
 @inject IPersonService PersonService
-@inject IHttpService HttpService
 
 <MudContainer>
 
@@ -93,7 +92,7 @@
             files.Add(file);
         }
 
-        this.person.ProfilePicture = await HttpService.PutBrowseFile<PictureBase64DataViewModel>("Person/UploadProfilePicture", files[0]);
+        this.person.ProfilePicture = await PersonService.UpdateProfilePicture(files[0]);
 
         files = new List<IBrowserFile>();
         StateHasChanged();
