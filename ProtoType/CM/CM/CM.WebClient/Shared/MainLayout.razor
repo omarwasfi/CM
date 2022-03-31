@@ -7,6 +7,7 @@
 
 
 
+
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -61,32 +62,56 @@
     public bool IsConnected => hubConnection.State == HubConnectionState.Connected;
     protected override async Task OnInitializedAsync()
     {
-        try
+        await AuthenticationService.Initialize();
+        if (AuthenticationService.Token != null && String.IsNullOrWhiteSpace(AuthenticationService.Token.Token) == false)
         {
-            hubConnection = new HubConnectionBuilder().WithUrl(Configuration.GetSection("ApiUrl").Value + "chathub").Build();
-            await hubConnection.StartAsync();
-            hubConnection.On<string, string>("ReceiveChatNotification", (message, roomId) =>
+            try
             {
+                hubConnection = new HubConnectionBuilder().WithUrl(
+                   Configuration.GetSection("ApiUrl").Value + "chathub"
+                   , options =>
+                   {
+                       options.AccessTokenProvider = () => Task.FromResult(AuthenticationService.Token.Token);
+                   }
+                   )
+                   .WithAutomaticReconnect()
+                   .Build();
+                await hubConnection.StartAsync();
+                hubConnection.On<string, string>("ReceiveChatNotification", (message, roomId) =>
+                {
 
-                _snackBar.Add(message, Severity.Info, config =>
+                    _snackBar.Add(message, Severity.Info, config =>
+                    {
+                        config.VisibleStateDuration = 10000;
+                        config.HideTransitionDuration = 500;
+                        config.ShowTransitionDuration = 500;
+                        config.Action = "Chat?";
+                        config.ActionColor = Color.Info;
+                        config.Onclick = snackbar =>
+                        {
+                            NavigationManager.NavigateTo($"chat/{roomId}");
+                            return Task.CompletedTask;
+                        };
+                    });
+
+                });
+            }
+            catch
+            {
+                _snackBar.Add("Couldn't connect to the signalR hub", Severity.Error, config =>
                 {
                     config.VisibleStateDuration = 10000;
                     config.HideTransitionDuration = 500;
                     config.ShowTransitionDuration = 500;
-                    config.Action = "Chat?";
-                    config.ActionColor = Color.Info;
-                    config.Onclick = snackbar =>
-                    {
-                        NavigationManager.NavigateTo($"chat/{roomId}");
-                        return Task.CompletedTask;
-                    };
-                });
 
-            });
+
+                });
+            }
+
         }
-        catch
+        else
         {
-            _snackBar.Add("Couldn't connect to the signalR hib", Severity.Error, config =>
+            _snackBar.Add("Couldn't connect to the signalR hub, Please login", Severity.Info, config =>
             {
                 config.VisibleStateDuration = 10000;
                 config.HideTransitionDuration = 500;
@@ -95,6 +120,8 @@
 
             });
         }
+
+
 
 
     }

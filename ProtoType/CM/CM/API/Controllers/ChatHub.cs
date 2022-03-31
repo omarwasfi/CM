@@ -10,11 +10,9 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace CM.API.Controllers
 {
+	[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 	public class ChatHub : Hub
 	{
-
-		
-
         public ChatHub()
         {
 

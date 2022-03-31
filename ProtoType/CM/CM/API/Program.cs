@@ -18,6 +18,8 @@ using Serilog;
 
 
 
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
@@ -156,6 +158,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     options.SaveToken = true;
 });
 builder.Services.AddAuthorization();
+
+
 
 builder.Services.AddSignalR();
 

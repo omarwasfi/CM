@@ -4,6 +4,8 @@
 @inject IHttpService HttpService
 @inject IConfiguration Configuration
 @inject ISnackbar _snackBar
+@inject IAuthenticationService AuthenticationService
+
 
 
 <div class="d-flex flex-grow-1 flex-row">
@@ -60,27 +62,67 @@
     {
         authorizedUser = await PersonService.GetTheAuthorizedPerson();
 
+        await AuthenticationService.Initialize();
 
-        if (hubConnection == null)
+        if (AuthenticationService.Token != null && String.IsNullOrWhiteSpace(AuthenticationService.Token.Token) == false)
         {
-            hubConnection = new HubConnectionBuilder().WithUrl(Configuration.GetSection("ApiUrl").Value + "chathub").Build();
-        }
-        if (hubConnection.State == HubConnectionState.Disconnected)
-        {
-            await hubConnection.StartAsync();
-        }
-        hubConnection.On<string>("ReceiveMessage", async (message) =>
-        {
-            _snackBar.Add(message, Severity.Info, config =>
+            if (hubConnection == null)
+            {
+
+                try
+                {
+                    hubConnection = new HubConnectionBuilder().WithUrl(
+                       Configuration.GetSection("ApiUrl").Value + "chathub"
+                       , options =>
+                       {
+                           options.AccessTokenProvider = () => Task.FromResult(AuthenticationService.Token.Token);
+                       }
+                       )
+                       .WithAutomaticReconnect()
+                       .Build();
+                }
+                catch
+                {
+                    _snackBar.Add("Couldn't connect to the signalR hub, Please login", Severity.Error, config =>
+                    {
+                        config.VisibleStateDuration = 10000;
+                        config.HideTransitionDuration = 500;
+                        config.ShowTransitionDuration = 500;
+
+
+                    });
+                }
+
+            }
+            if (hubConnection.State == HubConnectionState.Disconnected)
+            {
+                await hubConnection.StartAsync();
+            }
+            hubConnection.On<string>("ReceiveMessage", async (message) =>
+            {
+                _snackBar.Add(message, Severity.Info, config =>
                 {
                     config.VisibleStateDuration = 10000;
                     config.HideTransitionDuration = 500;
                     config.ShowTransitionDuration = 500;
                     config.Action = "Chat?";
                     config.ActionColor = Color.Info;
-                    
+
                 });
-        });
+            });
+
+        }
+        else
+        {
+            _snackBar.Add("Couldn't connect to the signalR hub, Please login", Severity.Info, config =>
+            {
+                config.VisibleStateDuration = 10000;
+                config.HideTransitionDuration = 500;
+                config.ShowTransitionDuration = 500;
+
+
+            });
+        }
 
 
     }

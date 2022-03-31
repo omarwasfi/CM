@@ -123,7 +123,10 @@ namespace CM.API.Controllers
 			{
 				//var user = this.User;
 
-				await _hub.Clients.All.SendAsync("ReceiveMessage", message);
+				await _hub.Clients.User("dcdcb4c1-a29f-4c5c-b6cd-698b510e1c75").SendAsync("ReceiveMessage", message);
+
+				await _hub.Clients.User("88711814-c358-467c-956c-164be68b9929").SendAsync("ReceiveMessage", message);
+
 
 
 				return Ok();
