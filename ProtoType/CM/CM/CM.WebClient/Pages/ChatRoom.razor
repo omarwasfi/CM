@@ -98,9 +98,9 @@
             {
                 await hubConnection.StartAsync();
             }
-            hubConnection.On<string>("ReceiveMessage", async (message) =>
+            hubConnection.On<MessageDataViewModel>("ReceiveMessage", async (message) =>
             {
-                _snackBar.Add(message, Severity.Info, config =>
+                _snackBar.Add("Message from " + message.From.UserName, Severity.Info, config =>
                 {
                     config.VisibleStateDuration = 10000;
                     config.HideTransitionDuration = 500;
@@ -134,10 +134,10 @@
         currentMessage.MessageContentRequest = new MessageContentRequestDataViewModel();
         currentMessage.MessageContentRequest.Text = CurrentTextMessage;
 
-        //await HttpService.Post("Chat/SubmitMessage", currentMessage.MessageContentRequest.Text);
+        await HttpService.Post("Chat/SubmitMessage", currentMessage);
 
         // send the message to the server
-        await hubConnection.SendAsync("SendMessage", currentMessage.MessageContentRequest.Text);
+        // await hubConnection.SendAsync("SendMessage", currentMessage.MessageContentRequest.Text);
         CurrentTextMessage = "";
         currentMessage = new MessageRequestDataViewModel();
     }

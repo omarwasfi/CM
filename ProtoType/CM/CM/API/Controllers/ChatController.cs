@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using AutoMapper;
+using CM.API.Hubs;
 using CM.Library.DataModels;
 using CM.Library.DataModels.Chat;
 using CM.Library.Events.Chat;
@@ -117,15 +118,31 @@ namespace CM.API.Controllers
 
 		[HttpPost]
 		[Route("SubmitMessage")]
-		public async Task<ActionResult> SubmitMessage(string message)
+		public async Task<ActionResult> SubmitMessage(MessageRequestDataViewModel message)
 		{
 			try
 			{
-				//var user = this.User;
+				MessageDataModel messageDataModel = await _mediator.Send(
+					new SubmitMessageCommand(
+						roomId: message.RoomId,
+						fromPersonId: message.PersonId,
+						text: message.MessageContentRequest.Text,
+						pictureId: message.MessageContentRequest.pictureId,
+						claimsPrincipal: this.User						
+						)) ;
 
-				await _hub.Clients.User("dcdcb4c1-a29f-4c5c-b6cd-698b510e1c75").SendAsync("ReceiveMessage", message);
+				MessageDataViewModel messageDataViewModel = _mapper.Map<MessageDataViewModel>(messageDataModel);
 
-				await _hub.Clients.User("88711814-c358-467c-956c-164be68b9929").SendAsync("ReceiveMessage", message);
+				List<string> userIdsInTheRoom = new List<string>();
+				foreach(PersonDataModel person  in messageDataModel.Room.People)
+                {
+					userIdsInTheRoom.Add(person.Id);
+                }
+
+				await _hub.Clients.Users(userIdsInTheRoom).SendAsync("ReceiveMessage", messageDataViewModel);
+
+
+				
 
 
 

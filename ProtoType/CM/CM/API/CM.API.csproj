@@ -48,6 +48,7 @@
     <None Remove="MappingConfiguration\" />
     <None Remove="AutoMapper.Extensions.Microsoft.DependencyInjection" />
     <None Remove="Microsoft.AspNet.SignalR" />
+    <None Remove="Hubs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\CM.Library.csproj">
@@ -62,6 +63,7 @@
     <Folder Include="wwwroot\App_Data\UsersData\" />
     <Folder Include="wwwroot\App_Data\Default\" />
     <Folder Include="MappingConfiguration\" />
+    <Folder Include="Hubs\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\App_Data\UsersData\" />

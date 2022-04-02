@@ -5,7 +5,7 @@ namespace CM.SharedWithClient.RequestViewModels
 	{
 		public string? Text { get; set; }
 
-		string? pictureId { get; set; }
+		public string? pictureId { get; set; }
 	}
 }
 

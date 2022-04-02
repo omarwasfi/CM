@@ -30,6 +30,10 @@
     <Folder Include="Events\Room\" />
     <Folder Include="Queries\Room\" />
     <Folder Include="Events\Chat\" />
+    <Folder Include="Events\MessageContent\" />
+    <Folder Include="Events\Message\" />
+    <Folder Include="Queries\MessageContent\" />
+    <Folder Include="Queries\Message\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,5 +49,10 @@
     <None Remove="Events\Room\" />
     <None Remove="Queries\Room\" />
     <None Remove="Events\Chat\" />
+    <None Remove="Events\MessageContent\" />
+    <None Remove="Events\Message\" />
+    <None Remove="Queries\MessageContent\" />
+    <None Remove="Queries\Message\" />
+    <None Remove="ChatHub\" />
   </ItemGroup>
 </Project>

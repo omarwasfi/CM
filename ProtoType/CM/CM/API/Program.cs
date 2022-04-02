@@ -2,6 +2,7 @@
 using System.Text;
 using CM.API.Controllers;
 using CM.API.MappingConfiguration;
+using CM.API.Hubs;
 using CM.Library;
 using CM.Library.DataModels;
 using CM.Library.DBContexts;

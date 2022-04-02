@@ -19,6 +19,12 @@ namespace CM.API.MappingConfiguration
 				.ForMember(p => p.Base64 ,opt => opt.MapFrom<PictureToBase64Resolver>());
 
 			CreateMap<RoomDataModel, RoomDataViewModel>();
+
+			CreateMap<MessageDataModel, MessageDataViewModel>();
+
+			CreateMap<MessageContentDataModel, MessageContentDataViewModel>();
+
+
 		}
 
 		
