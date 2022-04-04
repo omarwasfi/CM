@@ -1,0 +1,56 @@
+﻿@page "/Contacts"
+@inject IPersonService PersonService
+@inject NavigationManager NavigationManager
+@inject IPersonService PersonService
+
+<div class="d-flex flex-grow-1 flex-row">
+    
+    <MudPaper Elevation="25" Class="pa-4 ml-6" Width="95%">
+        <MudToolBar Dense="true">
+            <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
+            <MudText Typo="Typo.h6">contacts</MudText>
+        </MudToolBar>
+        <div class="d-flex flex-column px-4" style="max-height:70vh;min-height:70vh; overflow:scroll;">
+            <MudList Clickable="true">
+                @foreach (var person in People)
+                {
+                    <MudListItem Class="pa-0 px-2" OnClick="@(() => LoadChat(person.Id))">
+                        <div class="d-flex flex-row mt-n1 mb-n1">
+                            <div class="mr-4">
+                                <MudBadge Class="my-2">
+                                    
+                                        <MudAvatar Color="Color.Dark" Image=@person.ProfilePicture.Base64 Style="height:50px; width:50px;"/>
+                                    
+                                </MudBadge>
+                            </div>
+                            <div>
+                                <MudText Typo="Typo.body2" Class="mt-3 mb-n2">@person.UserName</MudText>
+                                <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@person.Id</MudText>
+                            </div>
+                        </div>
+                    </MudListItem>
+                }
+            </MudList>
+        </div>
+    </MudPaper>
+</div>
+
+@code {
+
+    private List<PersonDataViewModel> People { get; set; } = new List<PersonDataViewModel>();
+
+    private PersonDataViewModel autherizedPerson { get; set; } = new PersonDataViewModel();
+
+    protected override async Task OnInitializedAsync()
+    {
+        People = await PersonService.GetContacts();
+        this.autherizedPerson = await PersonService.GetTheAuthorizedPerson();
+    }
+
+    private async Task LoadChat(string personId)
+    {
+        NavigationManager.NavigateTo($"/chat/{personId}/{this.autherizedPerson.Id}");
+    }
+
+}
+

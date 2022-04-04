@@ -14,6 +14,14 @@ namespace CM.WebClient.Services.Classes
             this._httpService = httpService;
 		}
 
+        public async Task<List<PersonDataViewModel>> GetContacts()
+        {
+            List<PersonDataViewModel> personDataViewModels = new List<PersonDataViewModel>();
+            personDataViewModels = await _httpService.Get<List<PersonDataViewModel>>("Person/GetContacts");
+
+            return personDataViewModels;
+        }
+
         public Task<PersonDataViewModel> GetPerson(string personId)
         {
             throw new NotImplementedException();

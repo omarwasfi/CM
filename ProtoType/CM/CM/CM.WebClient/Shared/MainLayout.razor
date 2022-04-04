@@ -19,6 +19,7 @@
         <MudSpacer />
         @if (AuthenticationService.Token == null)
         {
+
             <MudIconButton Href="login" Icon="@Icons.Material.Filled.Login" Color="Color.Inherit" Edge="Edge.End" />
 
 
@@ -26,6 +27,9 @@
         }
         else
         {
+
+            <MudIconButton Href="contacts" Icon="@Icons.Material.Filled.Contacts" Color="Color.Inherit" Edge="Edge.End" />
+
             <MudIconButton Href="logout" Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" />
 
         }

@@ -123,6 +123,36 @@ namespace CM.API.Controllers
 
             }
         }
+
+        [HttpGet]
+        [Route("GetContacts")]
+        public async Task<ActionResult<List<PersonDataViewModel>>> GetContacts()
+        {
+
+
+            try
+            {
+                List<PersonDataModel> people = await _mediator.Send(new GetContactsQuery(this.User));
+
+                List<PersonDataViewModel> PersonDataViewModels = new List<PersonDataViewModel>();
+
+                PersonDataViewModels = _mapper.Map<List<PersonDataViewModel>>(people);
+
+
+
+                return Ok(PersonDataViewModels);
+            }
+
+            catch (ValidationException v)
+            {
+                return ValidationProblem(v.Message);
+            }
+            catch
+            {
+                return BadRequest("Unrecognized error");
+
+            }
+        }
     }
 }
 

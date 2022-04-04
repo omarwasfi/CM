@@ -17,14 +17,16 @@ namespace CM.Library.Events.Person
     public class RegisterPersonHandler : IRequestHandler<RegisterPersonCommand, string>
     {
         private readonly EventsDBContext _eventsDBContext;
+        private readonly CurrentStateDBContext _currentStateDBContext;
         private readonly UserManager<PersonDataModel> _userManager;
         private readonly IMediator _mediator;
 
-        public RegisterPersonHandler(IMediator mediator, EventsDBContext eventsDBContext, UserManager<PersonDataModel> userManager)
+        public RegisterPersonHandler(IMediator mediator, EventsDBContext eventsDBContext, UserManager<PersonDataModel> userManager , CurrentStateDBContext currentStateDBContext)
         {
             this._eventsDBContext = eventsDBContext;
             this._mediator = mediator;
             _userManager = userManager;
+            this._currentStateDBContext = currentStateDBContext;
         }
         public async Task<string> Handle( RegisterPersonCommand request, CancellationToken cancellationToken)
         {
@@ -53,9 +55,12 @@ namespace CM.Library.Events.Person
 
         private async Task applyEventToTheCurrentState(RegisterPersonCommand request)
         {
+            PictureDataModel pictureDataModel = new PictureDataModel() { FileExtension = "jpg", Path = "/App_Data/Default/", FileName = "DefaultProfileImg" };
+            await _currentStateDBContext.Pictures.AddAsync(pictureDataModel);
             PersonDataModel person = new PersonDataModel()
             {
-                UserName = request.UserName
+                UserName = request.UserName,
+                ProfilePicture = pictureDataModel
 
             };
             await _userManager.CreateAsync(person, request.Password);
