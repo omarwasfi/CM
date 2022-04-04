@@ -37,7 +37,7 @@
 else
 {
     <div class="d-flex flex-grow-1 flex-row">
-        <MudPaper Elevation="25" Class="py-4 flex-grow-1">
+        <MudPaper Elevation="25" Class="py-4 flex-grow-1" Width="95%">
             <MudToolBar Dense="true">
 
                 <MudIcon Icon="@Icons.Material.Outlined.Person" Style="margin-right:10px"></MudIcon>
@@ -48,7 +48,7 @@ else
                 {
                     <div class="d-flex flex-row my-4">
                         <div class="mr-4">
-                            <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@message.From.UserName.ToUpper().FirstOrDefault()</MudAvatar>
+                            <MudAvatar Color="Color.Secondary" Image="@message.From.ProfilePicture.Base64" Style="height:50px; width:50px;"/>
                         </div>
                         <div>
                             <MudText Typo="Typo.body1">@message.From.UserName</MudText>
@@ -64,13 +64,7 @@ else
                 <MudButton OnClick="SubmitMessageAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
             </MudPaper>
         </MudPaper>
-        <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
-            <MudToolBar Dense="true">
-                <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
-                <MudText Typo="Typo.h6">contacts</MudText>
-            </MudToolBar>
-
-        </MudPaper>
+        
     </div>
 
 }
