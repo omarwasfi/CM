@@ -1,57 +1,91 @@
-﻿@page "/chat/{RoomId}"
+﻿@page "/chat/{FirstPersonId}/{SecondPersonId}"
 @page "/chat"
 @inject IPersonService PersonService
-@inject IHttpService HttpService
 @inject IConfiguration Configuration
 @inject ISnackbar _snackBar
 @inject IAuthenticationService AuthenticationService
+@inject IChatService ChatService
 
+@if (chatState != ChatState.Active)
+{
 
+    <div class="d-flex flex-grow-1 flex-row">
+        <MudPaper Elevation="25" Class="py-4 flex-grow-1">
+            <MudToolBar Dense="true">
 
-<div class="d-flex flex-grow-1 flex-row">
-    <MudPaper Elevation="25" Class="py-4 flex-grow-1">
-        <MudToolBar Dense="true">
-
-            <MudIcon Icon="@Icons.Material.Outlined.Person" Style="margin-right:10px"></MudIcon>
-            <MudText Typo="Typo.h6">chat</MudText>
-        </MudToolBar>
-        <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
-            @foreach (var message in messages)
-            {
-                <div class="d-flex flex-row my-4">
-                    <div class="mr-4">
-                        <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@message.From.UserName.ToUpper().FirstOrDefault()</MudAvatar>
-                    </div>
-                    <div>
-                        <MudText Typo="Typo.body1">@message.From.UserName</MudText>
-                        <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@message.DateTime.ToString()</MudText>
-                        <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">@message.MessageContent.Text</MudText>
-                    </div>
-                </div>
-            }
-        </div>
-        <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
-            <MudTextField T="string" Placeholder="Enter your message..." DisableUnderLine="true" Class="mt-n2 mx-4"
-                          @bind-Value="CurrentTextMessage" For="@(()=> CurrentTextMessage)" />
-            <MudButton OnClick="SubmitMessageAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+                <MudIcon Icon="@Icons.Material.Outlined.Person" Style="margin-right:10px"></MudIcon>
+                <MudText Typo="Typo.h6">No Chat Selected ! </MudText>
+            </MudToolBar>
+            <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+                
+            </div>
+            <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
+                <MudTextField T="string" Disabled="true" Placeholder="Select Chat..." DisableUnderLine="true" Class="mt-n2 mx-4"
+                              />
+                <MudButton Disabled="true" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+            </MudPaper>
         </MudPaper>
-    </MudPaper>
-    <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
-        <MudToolBar Dense="true">
-            <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
-            <MudText Typo="Typo.h6">contacts</MudText>
-        </MudToolBar>
+        <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
+            <MudToolBar Dense="true">
+                <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
+                <MudText Typo="Typo.h6">contacts</MudText>
+            </MudToolBar>
 
-    </MudPaper>
-</div>
+        </MudPaper>
+    </div>
+}
+else
+{
+    <div class="d-flex flex-grow-1 flex-row">
+        <MudPaper Elevation="25" Class="py-4 flex-grow-1">
+            <MudToolBar Dense="true">
+
+                <MudIcon Icon="@Icons.Material.Outlined.Person" Style="margin-right:10px"></MudIcon>
+                <MudText Typo="Typo.h6">chat</MudText>
+            </MudToolBar>
+            <div class="d-flex flex-column px-4" style="max-height:65vh;min-height:65vh; overflow:scroll;" id="chatContainer">
+                @foreach (var message in this.Room.Messages)
+                {
+                    <div class="d-flex flex-row my-4">
+                        <div class="mr-4">
+                            <MudAvatar Color="Color.Secondary" Style="height:50px; width:50px;">@message.From.UserName.ToUpper().FirstOrDefault()</MudAvatar>
+                        </div>
+                        <div>
+                            <MudText Typo="Typo.body1">@message.From.UserName</MudText>
+                            <MudText Typo="Typo.caption" Style="font-size: xx-small!important;">@message.DateTime.ToString()</MudText>
+                            <MudText Typo="Typo.body2" Style=" padding: 15px;background-color: var(--mud-palette-background-grey);border-radius: 5px;margin-top:5px">@message.MessageContent.Text</MudText>
+                        </div>
+                    </div>
+                }
+            </div>
+            <MudPaper Elevation="25" Class="d-flex flex-row px-2 mx-4" Style="">
+                <MudTextField T="string" Placeholder="Enter your message..." DisableUnderLine="true" Class="mt-n2 mx-4"
+                              @bind-Value="CurrentTextMessage" For="@(() => CurrentTextMessage)" />
+                <MudButton OnClick="SubmitMessageAsync" StartIcon="@Icons.Material.Outlined.Send" Color="Color.Secondary" ButtonType="ButtonType.Button">Send</MudButton>
+            </MudPaper>
+        </MudPaper>
+        <MudPaper Elevation="25" Class="pa-3 ml-6" MinWidth="350px">
+            <MudToolBar Dense="true">
+                <MudText Typo="Typo.h6" Inline="true" Class="mr-2">#</MudText>
+                <MudText Typo="Typo.h6">contacts</MudText>
+            </MudToolBar>
+
+        </MudPaper>
+    </div>
+
+}
 
 
 @code{
     [CascadingParameter] public HubConnection hubConnection { get; set; }
-    [Parameter] public string RoomId { get; set; }
+    [Parameter] public string FirstPersonId { get; set; }
+    [Parameter] public string SecondPersonId { get; set; }
 
 
-    private List<MessageDataViewModel> messages = new List<MessageDataViewModel>();
+
+    private RoomDataViewModel Room { get; set; }
+    private ChatState chatState { get; set; } = ChatState.NoRoomSelected;
+
     private MessageRequestDataViewModel currentMessage = new MessageRequestDataViewModel();
 
     private string CurrentTextMessage { get; set; }
@@ -60,69 +94,91 @@
 
     protected override async Task OnInitializedAsync()
     {
-        authorizedUser = await PersonService.GetTheAuthorizedPerson();
-
-        await AuthenticationService.Initialize();
-
-        if (AuthenticationService.Token != null && String.IsNullOrWhiteSpace(AuthenticationService.Token.Token) == false)
+        if (String.IsNullOrEmpty(FirstPersonId) && String.IsNullOrEmpty(SecondPersonId))
         {
-            if (hubConnection == null)
-            {
+            chatState = ChatState.NoRoomSelected;
+        }
+        else
+        {
+            StartPrivateChatRequestDataViewModel startPrivateChatRequestDataViewModel = new StartPrivateChatRequestDataViewModel();
+            startPrivateChatRequestDataViewModel.FirstPersonId = FirstPersonId;
+            startPrivateChatRequestDataViewModel.SecondPersonId = SecondPersonId;
 
-                try
+            try
+            {
+                Room = await ChatService.StartPrivateChat(startPrivateChatRequestDataViewModel);
+                chatState = ChatState.Active;
+            }
+            catch
+            {
+                chatState = ChatState.RoomNotFound;
+            }
+
+        }
+
+        if (chatState == ChatState.Active)
+        {
+            authorizedUser = await PersonService.GetTheAuthorizedPerson();
+
+            await AuthenticationService.Initialize();
+
+
+            if (AuthenticationService.Token != null && String.IsNullOrWhiteSpace(AuthenticationService.Token.Token) == false)
+            {
+                if (hubConnection == null)
                 {
-                    hubConnection = new HubConnectionBuilder().WithUrl(
-                       Configuration.GetSection("ApiUrl").Value + "chathub"
-                       , options =>
-                       {
-                           options.AccessTokenProvider = () => Task.FromResult(AuthenticationService.Token.Token);
-                       }
-                       )
-                       .WithAutomaticReconnect()
-                       .Build();
-                }
-                catch
-                {
-                    _snackBar.Add("Couldn't connect to the signalR hub, Please login", Severity.Error, config =>
+
+                    try
                     {
-                        config.VisibleStateDuration = 10000;
-                        config.HideTransitionDuration = 500;
-                        config.ShowTransitionDuration = 500;
+                        hubConnection = new HubConnectionBuilder().WithUrl(
+                           Configuration.GetSection("ApiUrl").Value + "chathub"
+                           , options =>
+                           {
+                               options.AccessTokenProvider = () => Task.FromResult(AuthenticationService.Token.Token);
+                           }
+                           )
+                           .WithAutomaticReconnect()
+                           .Build();
+                    }
+                    catch
+                    {
+                        _snackBar.Add("Couldn't connect to the signalR hub, Please login", Severity.Error, config =>
+                        {
+                            config.VisibleStateDuration = 10000;
+                            config.HideTransitionDuration = 500;
+                            config.ShowTransitionDuration = 500;
 
 
-                    });
+                        });
+                    }
+
                 }
+                if (hubConnection.State == HubConnectionState.Disconnected)
+                {
+                    await hubConnection.StartAsync();
+                }
+                hubConnection.On<MessageDataViewModel>("ReceiveMessage", async (message) =>
+                {
+                    Room.Messages.Add(message);
+                    StateHasChanged();
+                });
 
             }
-            if (hubConnection.State == HubConnectionState.Disconnected)
+            else
             {
-                await hubConnection.StartAsync();
-            }
-            hubConnection.On<MessageDataViewModel>("ReceiveMessage", async (message) =>
-            {
-                _snackBar.Add("Message from " + message.From.UserName, Severity.Info, config =>
+                _snackBar.Add("Couldn't connect to the signalR hub, Please login", Severity.Info, config =>
                 {
                     config.VisibleStateDuration = 10000;
                     config.HideTransitionDuration = 500;
                     config.ShowTransitionDuration = 500;
-                    config.Action = "Chat?";
-                    config.ActionColor = Color.Info;
+
 
                 });
-            });
-
+            }
         }
-        else
-        {
-            _snackBar.Add("Couldn't connect to the signalR hub, Please login", Severity.Info, config =>
-            {
-                config.VisibleStateDuration = 10000;
-                config.HideTransitionDuration = 500;
-                config.ShowTransitionDuration = 500;
 
 
-            });
-        }
+
 
 
     }
@@ -130,17 +186,22 @@
     private async Task SubmitMessageAsync()
     {
         currentMessage.PersonId = authorizedUser.Id;
-        currentMessage.RoomId = this.RoomId;
+        currentMessage.RoomId = this.Room.Id ;
         currentMessage.MessageContentRequest = new MessageContentRequestDataViewModel();
         currentMessage.MessageContentRequest.Text = CurrentTextMessage;
 
-        await HttpService.Post("Chat/SubmitMessage", currentMessage);
+        await ChatService.SubmitMessage(currentMessage);
 
-        // send the message to the server
-        // await hubConnection.SendAsync("SendMessage", currentMessage.MessageContentRequest.Text);
+
         CurrentTextMessage = "";
         currentMessage = new MessageRequestDataViewModel();
     }
 
+    enum ChatState
+    {
+        Active,
+        RoomNotFound,
+        NoRoomSelected
+    }
 
 }

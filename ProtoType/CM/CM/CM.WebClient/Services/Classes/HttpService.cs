@@ -67,44 +67,7 @@ namespace CM.WebClient.Services.Classes
             var request = new HttpRequestMessage(HttpMethod.Put, uri);
             request.Content = form;
             return await sendRequest<T>(request);
-            /*
-            T result;
-            using (var client = _httpClient)
-            {
-                var token = await _localStorageService.GetItem<TokenDataViewModel>("token");
-                if (token != null )
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token.Token);
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("multipart/form-data"));
-                try
-                {
-                    // 4.. Execute the MultipartPostMethod
-                    var response = await client.PutAsync(uri, fileContent);
-                    // 5.a Receive the response
-
-                    if (response.StatusCode == HttpStatusCode.Unauthorized)
-                    {
-                        _navigationManager.NavigateTo("logout");
-                        return default;
-                    }
-
-                    // throw exception on error response
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        var error = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
-                        throw new Exception(error["message"]);
-                    }
-
-                    result = await response.Content.ReadFromJsonAsync<T>();
-
-                }
-                catch (Exception ex)
-                {
-                    // Do what you want if it fails.
-                    throw ex;
-                }
-            }
-
-            return result;*/
+           
         }
 
         // helper methods

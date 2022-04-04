@@ -32,8 +32,12 @@ namespace CM.Library.Queries.Room
 
             try
             {
-                return privateRoomDataModel = _currentStateDBContext.Rooms.
+                privateRoomDataModel = _currentStateDBContext.Rooms.
                 First(x => x.People.Contains(firstPersonDataModel) && x.People.Contains(secondPersonDataModel));
+
+                privateRoomDataModel.Messages = privateRoomDataModel.Messages.OrderBy(x => x.DateTime).ToList();
+
+                return privateRoomDataModel;
             }
             catch
             {

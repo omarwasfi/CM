@@ -43,11 +43,13 @@ namespace CM.API.Controllers
 
 		[HttpPost]
 		[Route("StartPrivateChat")]
-		public async Task<ActionResult<RoomDataViewModel>> StartPrivateChat(string firstPersonId , string secondPersonId)
+		public async Task<ActionResult<RoomDataViewModel>> StartPrivateChat(StartPrivateChatRequestDataViewModel startPrivateChatRequestDataViewModel)
 		{
             try
             {
-				RoomDataModel roomDataModel = await _mediator.Send(new StartPrivateChatCommand(firstPersonId, secondPersonId, this.User));
+				RoomDataModel roomDataModel = await _mediator.Send(
+					new StartPrivateChatCommand(startPrivateChatRequestDataViewModel.FirstPersonId,
+					startPrivateChatRequestDataViewModel.SecondPersonId, this.User));
 
 				RoomDataViewModel roomDataViewModel = _mapper.Map<RoomDataViewModel>(roomDataModel);
 
@@ -132,12 +134,15 @@ namespace CM.API.Controllers
 						)) ;
 
 				MessageDataViewModel messageDataViewModel = _mapper.Map<MessageDataViewModel>(messageDataModel);
+			
 
 				List<string> userIdsInTheRoom = new List<string>();
 				foreach(PersonDataModel person  in messageDataModel.Room.People)
                 {
 					userIdsInTheRoom.Add(person.Id);
                 }
+
+
 
 				await _hub.Clients.Users(userIdsInTheRoom).SendAsync("ReceiveMessage", messageDataViewModel);
 

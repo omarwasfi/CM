@@ -19,7 +19,8 @@ builder.Services
                .AddScoped<IAuthenticationService, AuthenticationService>()
                .AddScoped<IHttpService, HttpService>()
                .AddScoped<IPersonService,PersonService>()
-               .AddScoped<ILocalStorageService, LocalStorageService>();
+               .AddScoped<ILocalStorageService, LocalStorageService>()
+               .AddScoped<IChatService,ChatService>();
 
 
 await builder.Build().RunAsync();

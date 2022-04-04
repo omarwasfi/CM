@@ -3,7 +3,7 @@ namespace CM.SharedWithClient
 {
 	public class TokenDataViewModel
 	{
-        public string Token { get; set; }
+        public string? Token { get; set; }
     }
 }
 
