@@ -53,17 +53,22 @@ namespace CM.API.Controllers
 
         [HttpPost]
         [Route("RegisterWithUsername")]
-        public async Task<IActionResult> RegisterWithUsername(string username, string password,string confirmedPassword)
+        public async Task<ActionResult<TokenDataViewModel>> RegisterWithUsername(RegisterRequestDataViewModel registerRequestDataViewModel)
         {
             try
             {
-                return Ok( await _mediator.Send(new RegisterPersonCommand(
-                    username,
-                    password,
-                    confirmedPassword,
+
+                TokenDataViewModel token = new TokenDataViewModel();
+                token.Token = await _mediator.Send(new RegisterPersonCommand(
+                    registerRequestDataViewModel.Username,
+                    registerRequestDataViewModel.Password,
+                    registerRequestDataViewModel.ConfirmPassword,
                     issuer: _configuration.GetValue<string>("Jwt:Issuer"),
                     audience: _configuration.GetValue<string>("Jwt:Audience")
-                    )));
+                    ));
+                return Ok(token);
+
+
 
             }
             catch (ValidationException v)

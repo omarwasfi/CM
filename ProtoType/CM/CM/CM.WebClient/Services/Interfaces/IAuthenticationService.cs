@@ -9,6 +9,7 @@ namespace CM.WebClient.Services.Interfaces
 		TokenDataViewModel? Token { get; }
 		Task Initialize();
 		Task Login(LoginWithUsernameRequestDataViewModel loginWithUsernameRequest);
+		Task Register(RegisterRequestDataViewModel registerRequest);
 		Task Logout();
 	}
 }

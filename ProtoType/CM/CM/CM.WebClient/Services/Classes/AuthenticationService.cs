@@ -42,6 +42,12 @@ namespace CM.WebClient.Services.Classes
             await _localStorageService.RemoveItem("token");
             _navigationManager.NavigateTo("login");
         }
+
+        public async Task Register(RegisterRequestDataViewModel registerRequest)
+        {
+            Token = await _httpService.Post<TokenDataViewModel>("Authentication/RegisterWithUsername", registerRequest);
+            await _localStorageService.SetItem("token", Token);
+        }
     }
 }
 

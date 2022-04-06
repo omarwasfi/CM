@@ -35,7 +35,7 @@ namespace CM.Library.Events.Person
             registerPersonEvent.Type = EventType.RegisterPerson;
             registerPersonEvent.DateTime = DateTime.Now;
 
-            RegisterPersonCommand tempRegisterPersonCommand = request;
+            RegisterPersonCommand tempRegisterPersonCommand = request.DeepCopy();
             tempRegisterPersonCommand.Password = "Not Saved Here";
 
             var settings = new JsonSerializerSettings

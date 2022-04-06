@@ -28,5 +28,10 @@ namespace CM.Library.Events.Person
             this.Issuer = issuer;
             this.Audience = audience;
         }
+
+        public RegisterPersonCommand DeepCopy()
+        {
+            return (RegisterPersonCommand)this.MemberwiseClone();
+        }
     }
 }

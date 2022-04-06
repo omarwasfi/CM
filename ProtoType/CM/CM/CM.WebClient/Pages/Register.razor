@@ -1,34 +1,36 @@
-﻿@page  "/login"
-@using System.ComponentModel.DataAnnotations
+﻿@page "/register"
+
 @inject IAuthenticationService AuthenticationService
 @inject NavigationManager NavigationManager
 
 <div class="col-md-6 offset-md-3 mt-5">
-    <div class="alert alert-info">
-        Username: omarwasfi<br />
-        Password: 12345678
-    </div>
+
     <div class="card">
         <h4 class="card-header">Blazor WebAssembly JWT Login Example</h4>
         <div class="card-body">
-            <EditForm Model="@loginWithUsernameRequest" OnValidSubmit="HandleValidSubmit">
+            <EditForm Model="@registerRequestDataViewModel" OnValidSubmit="HandleValidSubmit">
                 <DataAnnotationsValidator />
                 <div class="form-group">
                     <label>Username</label>
-                    <InputText @bind-Value="loginWithUsernameRequest.Username" class="form-control" />
-                    <ValidationMessage For="@(() => loginWithUsernameRequest.Username)" />
+                    <InputText @bind-Value="registerRequestDataViewModel.Username" class="form-control" />
+                    <ValidationMessage For="@(() => registerRequestDataViewModel.Username)" />
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <InputText @bind-Value="loginWithUsernameRequest.Password" type="password" class="form-control" />
-                    <ValidationMessage For="@(() => loginWithUsernameRequest.Password)" />
+                    <InputText @bind-Value="registerRequestDataViewModel.Password" type="password" class="form-control" />
+                    <ValidationMessage For="@(() => registerRequestDataViewModel.Password)" />
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <InputText @bind-Value="registerRequestDataViewModel.ConfirmPassword" type="password" class="form-control" />
+                    <ValidationMessage For="@(() => registerRequestDataViewModel.ConfirmPassword)" />
                 </div>
                 <button class="btn btn-primary">
                     @if (loading)
                     {
                         <span class="spinner-border spinner-border-sm mr-1"></span>
                     }
-                    Login
+                    Register
                 </button>
                 @if (!string.IsNullOrEmpty(error))
                 {
@@ -38,12 +40,12 @@
         </div>
     </div>
     <div class="alert alert-info">
-        <a href="/register">Not a member regiser now.</a>
+        <a href="/Login">You are a member login now.</a>
     </div>
 </div>
 
 @code {
-    LoginWithUsernameRequestDataViewModel loginWithUsernameRequest = new LoginWithUsernameRequestDataViewModel();
+    RegisterRequestDataViewModel registerRequestDataViewModel = new RegisterRequestDataViewModel();
     private bool loading;
     private string error;
 
@@ -54,7 +56,7 @@
             NavigationManager.NavigateTo("MyProfile");
         }
 
-        loginWithUsernameRequest = new LoginWithUsernameRequestDataViewModel();
+        registerRequestDataViewModel = new RegisterRequestDataViewModel();
     }
 
     private async void HandleValidSubmit()
@@ -62,13 +64,13 @@
         loading = true;
         try
         {
-            await AuthenticationService.Login(loginWithUsernameRequest);
+            await AuthenticationService.Register(registerRequestDataViewModel);
 
             //var returnUrl = NavigationManager.QueryString("returnUrl") ?? "/";
             NavigationManager.NavigateTo("MyProfile");
 
             this.StateHasChanged();
-            
+
         }
         catch (Exception ex)
         {
