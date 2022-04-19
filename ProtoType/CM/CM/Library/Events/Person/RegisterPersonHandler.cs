@@ -55,7 +55,7 @@ namespace CM.Library.Events.Person
 
         private async Task applyEventToTheCurrentState(RegisterPersonCommand request)
         {
-            PictureDataModel pictureDataModel = new PictureDataModel() { FileExtension = "jpg", Path = "/App_Data/Default/", FileName = "DefaultProfileImg" };
+            PictureDataModel pictureDataModel = new PictureDataModel() { FileExtension = request.DefaultProfilePictureFileExtension, Path = request.DefaultProfilePictureFilePath, FileName = request.DefaultProfilePictureFileName};
             await _currentStateDBContext.Pictures.AddAsync(pictureDataModel);
             PersonDataModel person = new PersonDataModel()
             {

@@ -66,8 +66,10 @@ namespace CM.API.Controllers
                     registerRequestDataViewModel.ConfirmPassword,
                     issuer: _configuration.GetValue<string>("Jwt:Issuer"),
                     audience: _configuration.GetValue<string>("Jwt:Audience"),
-                                        jwtKey: _configuration.GetValue<string>("Jwt:Key")
-
+                    jwtKey: _configuration.GetValue<string>("Jwt:Key"),
+                    defaultProfilePictureFileName: _configuration.GetValue<string>("DefaultProfileImg:FileName"),
+                    defaultProfilePictureFileExtension: _configuration.GetValue<string>("DefaultProfileImg:FileExtension"),
+                    defaultProfilePictureFilePath: _configuration.GetValue<string>("DefaultProfileImg:Path")
                     ));
                 return Ok(token);
 

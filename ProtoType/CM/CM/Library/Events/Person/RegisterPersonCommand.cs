@@ -22,15 +22,32 @@ namespace CM.Library.Events.Person
 
         public string JwtKey { get; set; }
 
+        public string DefaultProfilePictureFileName { get; set; }
 
-        public RegisterPersonCommand(string username , string password, string confirmPassword, string issuer, string audience, string jwtKey)
+        public string DefaultProfilePictureFileExtension { get; set; }
+
+        public string DefaultProfilePictureFilePath { get; set; }
+
+
+        public RegisterPersonCommand(
+            string userName,
+            string password,
+            string confirmPassword,
+            string issuer, string audience,
+            string jwtKey,
+            string defaultProfilePictureFileName,
+            string defaultProfilePictureFileExtension,
+            string defaultProfilePictureFilePath)
         {
-            this.UserName = username;
-            this.Password = password;
-            this.ConfirmPassword = confirmPassword;
-            this.Issuer = issuer;
-            this.Audience = audience;
-            this.JwtKey = jwtKey;
+            UserName = userName;
+            Password = password;
+            ConfirmPassword = confirmPassword;
+            Issuer = issuer;
+            Audience = audience;
+            JwtKey = jwtKey;
+            DefaultProfilePictureFileName = defaultProfilePictureFileName;
+            DefaultProfilePictureFileExtension = defaultProfilePictureFileExtension;
+            DefaultProfilePictureFilePath = defaultProfilePictureFilePath;
         }
 
         public RegisterPersonCommand DeepCopy()
