@@ -100,7 +100,7 @@ namespace CM.Library.Events.Token
                expires: DateTime.UtcNow.AddDays(7),
                notBefore: DateTime.UtcNow,
                signingCredentials: new SigningCredentials(
-                   new SymmetricSecurityKey(Encoding.UTF8.GetBytes("WG4c2o2vZ2bnUJhkWME4RbcxFTG9yq8GiLywMtGQub2opU2gXVv")),
+                   new SymmetricSecurityKey(Encoding.UTF8.GetBytes(request.JwtKey)),
                    SecurityAlgorithms.HmacSha256)
            );
 

@@ -20,13 +20,17 @@ namespace CM.Library.Events.Person
 
         public string Audience { get; set; }
 
-        public RegisterPersonCommand(string username , string password, string confirmPassword, string issuer, string audience)
+        public string JwtKey { get; set; }
+
+
+        public RegisterPersonCommand(string username , string password, string confirmPassword, string issuer, string audience, string jwtKey)
         {
             this.UserName = username;
             this.Password = password;
             this.ConfirmPassword = confirmPassword;
             this.Issuer = issuer;
             this.Audience = audience;
+            this.JwtKey = jwtKey;
         }
 
         public RegisterPersonCommand DeepCopy()

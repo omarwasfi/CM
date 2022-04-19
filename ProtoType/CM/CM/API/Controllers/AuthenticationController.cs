@@ -36,7 +36,8 @@ namespace CM.API.Controllers
                     loginWithUsernameRequest.Username, loginWithUsernameRequest.Password,
                     rememberMe: false,
                     issuer: _configuration.GetValue<string>("Jwt:Issuer"),
-                    audience: _configuration.GetValue<string>("Jwt:Audience")
+                    audience: _configuration.GetValue<string>("Jwt:Audience"),
+                    jwtKey: _configuration.GetValue<string>("Jwt:Key")
                     ));
                 return  Ok(tokenDataViewModel);
             }
@@ -64,7 +65,9 @@ namespace CM.API.Controllers
                     registerRequestDataViewModel.Password,
                     registerRequestDataViewModel.ConfirmPassword,
                     issuer: _configuration.GetValue<string>("Jwt:Issuer"),
-                    audience: _configuration.GetValue<string>("Jwt:Audience")
+                    audience: _configuration.GetValue<string>("Jwt:Audience"),
+                                        jwtKey: _configuration.GetValue<string>("Jwt:Key")
+
                     ));
                 return Ok(token);
 

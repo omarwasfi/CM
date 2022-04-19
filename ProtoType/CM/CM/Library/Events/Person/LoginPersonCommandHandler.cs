@@ -55,7 +55,7 @@ namespace CM.Library.Events.Person
 
 
 
-            return await _mediator.Send(new CreateTokenByUserNameCommand(request.Usernamme,request.Issuer,request.Audience));
+            return await _mediator.Send(new CreateTokenByUserNameCommand(request.Usernamme,request.Issuer,request.Audience,request.JwtKey));
         }
         private async Task applyEventToTheCurrentState(LoginPersonCommand request)
         {
