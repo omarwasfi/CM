@@ -37,9 +37,9 @@ namespace CM.Library.Queries.Picture
             {
                 byte[] fileBytes = await convertLocalFileToArrOfByte(
               _hostingEnvironment.WebRootPath +
-              "/App_Data/Default/" +
-              "DefaultProfileImg" +
-              "." + "jpg"
+              request.DefaultProfilePictureFilePath +
+              request.DefaultProfilePictureFileName +
+              "." + request.DefaultProfilePictureFileExtension
              );
 
                 return "data:image/"
